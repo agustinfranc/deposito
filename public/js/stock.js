@@ -96,8 +96,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     console.log(data)
 
-    pintarRubros(data.rubros);
+    //pintarRubros(data.rubros);
 
-    pintarLista()
+    //pintarLista()
 
 });

@@ -14,8 +14,8 @@
                         </div>
                     @endif
 
-                    <a name="" id="" class="btn btn-primary" href="/catalogo" role="button">Ver Catalogo</a>
-                    <a name="" id="" class="btn btn-primary" href="/stock" role="button">Ver Stock</a>
+                    <a name="" id="" class="btn btn-primary disabled" href="/catalogo" role="button">Ver Catalogo</a>
+                    <a name="" id="" class="btn btn-primary" href=" {{ route('stock.index') }}" role="button">Ver Stock</a>
                     <a name="" id="" class="btn btn-primary disabled" href="/pedidos" role="button">Ver Pedidos</a>
                 </div>
             </div>

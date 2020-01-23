@@ -16,24 +16,25 @@
 
                 <div class="card-body">
 
-                    <form action="{{ route('stock.store') }}" method="post">
+                    <form action="{{ route('stock.update', $stock->id) }}" method="post">
                         @csrf
+                        @method('PUT')
                         <div class="form-group">
                           <label for="codigo">Codigo</label>
-                          <input type="number" class="form-control" id="codigo" name="codigo" aria-describedby="codigoHelp" required>
+                          <input type="number" class="form-control" id="codigo" name="codigo" value="{{ $stock->codigo }}" aria-describedby="codigoHelp" required>
                           {{-- <small id="codigoHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
                         </div>
                         <div class="form-group">
                             <label for="detalle">Detalle</label>
-                            <input type="text" class="form-control" id="detalle" name="detalle" required>
+                            <input type="text" class="form-control" id="detalle" name="detalle" value="{{ $stock->detalle }}" required>
                         </div>
                         <div class="form-group">
                             <label for="rubro">Rubro</label>
-                            <input type="text" class="form-control" id="rubro" name="rubro" required>
+                            <input type="text" class="form-control" id="rubro" name="rubro" value="{{ $stock->rubro }}" required>
                         </div>
                         <div class="form-group">
                             <label for="precio">Precio</label>
-                            <input type="number" class="form-control" id="precio" name="precio" required>
+                            <input type="number" class="form-control" id="precio" name="precio" value="{{ $stock->precio }}" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

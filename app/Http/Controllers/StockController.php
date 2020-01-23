@@ -25,8 +25,18 @@ class StockController extends Controller
      */
     public function index()
     {
-        return DB::table('stocks')->get();
+        //return DB::table('stocks')->get();
         //return StockResource::collection(Stock::with('ratings')); para usar el resource
+
+        //$usuarioEmail = auth()->user()->email;
+        //$stock = Stock::where('usuario', $usuarioEmail)->paginate(10);
+
+        $rubros = DB::table('stocks')
+                ->select('rubro')
+                ->groupBy('rubro')
+                ->get();
+        $stock = DB::table('stocks')->get();
+        return view('stock.index', compact('stock', 'rubros'));    
     }
 
     /**
@@ -47,7 +57,16 @@ class StockController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $stock = new Stock();
+        $stock->codigo = $request->codigo;
+        $stock->detalle = $request->detalle;
+        $stock->rubro = $request->rubro;
+        $stock->precio = $request->precio;
+
+        $stock->usuario_alta = auth()->user()->email;
+        $stock->save();
+
+        return back()->with('mensaje', 'Articulo creado');
     }
 
     /**
@@ -69,7 +88,8 @@ class StockController extends Controller
      */
     public function edit($id)
     {
-        //
+        $stock = Stock::findOrFail($id);
+        return view('stock.edit', compact('stock'));
     }
 
     /**
@@ -81,7 +101,15 @@ class StockController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $stock = Stock::findOrFail($id);
+        $stock->codigo = $request->codigo;
+        $stock->detalle = $request->detalle;
+        $stock->rubro = $request->rubro;
+        $stock->precio = $request->precio;
+
+        $stock->save();
+
+        return back()->with('mensaje', 'Articulo editado');
     }
 
     /**
@@ -92,6 +120,9 @@ class StockController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $stock = Stock::findOrFail($id);
+        $stock->delete();
+
+        return back()->with('mensaje', 'Articulo eliminado');
     }
 }
