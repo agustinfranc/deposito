@@ -16,7 +16,7 @@ class CreateStockTable extends Migration
         Schema::create('stocks', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('rubro');
-            $table->string('subrubro');
+            $table->string('subrubro')->nullable();
             $table->integer('codigo');
             $table->string('detalle');
             $table->tinyInteger('specs')->default(0);
@@ -37,7 +37,7 @@ class CreateStockTable extends Migration
             $table->string('spec5_datos')->nullable();
             $table->tinyInteger('comentario')->default(0);
             $table->tinyInteger('comentario1')->nullable();
-            $table->integer('cantidad');
+            $table->integer('cantidad')->default(0);
             $table->decimal('precio', 8, 2);
             $table->string('usuario_alta');
             $table->string('usuario_edicion')->nullable();
