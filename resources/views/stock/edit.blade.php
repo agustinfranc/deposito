@@ -36,6 +36,10 @@
                             <label for="precio">Precio</label>
                             <input type="number" class="form-control" id="precio" name="precio" value="{{ $stock->precio }}" required>
                         </div>
+                        <div class="form-group">
+                            <label for="cantidad">Cantidad</label>
+                            <input type="number" class="form-control" id="cantidad" name="cantidad" value="{{ $stock->cantidad }}" required>
+                        </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
 
