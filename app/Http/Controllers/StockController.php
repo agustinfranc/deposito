@@ -106,6 +106,7 @@ class StockController extends Controller
         $stock->detalle = $request->detalle;
         $stock->rubro = $request->rubro;
         $stock->precio = $request->precio;
+        $stock->cantidad = $request->cantidad;
 
         $stock->save();
 
