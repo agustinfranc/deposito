@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Pedido;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Stock;
+use App\Http\Resources\StockResource;
 
-class PedidosController extends Controller
+class CatalogoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,12 +16,12 @@ class PedidosController extends Controller
      */
     public function index()
     {
-        $email = auth()->user()->email;
-
-        $pedidos = DB::table('pedidos')
-            ->where('email', $email)
+        $rubros = DB::table('stocks')
+            ->select('rubro')
+            ->groupBy('rubro')
             ->get();
-        return view('pedidos.index', compact('pedidos'));    
+        $stock = DB::table('stocks')->get();
+        return view('catalogo', compact('stock', 'rubros'));
     }
 
     /**
@@ -30,7 +31,7 @@ class PedidosController extends Controller
      */
     public function create()
     {
-        return view('stock.create');
+        //
     }
 
     /**
@@ -47,10 +48,10 @@ class PedidosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Pedido  $pedidos
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Pedido $pedidos)
+    public function show($id)
     {
         //
     }
@@ -58,10 +59,10 @@ class PedidosController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Pedido  $pedidos
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pedido $pedidos)
+    public function edit($id)
     {
         //
     }
@@ -70,10 +71,10 @@ class PedidosController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Pedido  $pedidos
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pedido $pedidos)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -81,10 +82,10 @@ class PedidosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Pedido  $pedidos
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pedido $pedidos)
+    public function destroy($id)
     {
         //
     }

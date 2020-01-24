@@ -22,8 +22,17 @@ Route::get('/', 'HomeController@index')->name('home');
 
 Auth::routes();
 
-Route::get('/catalogo', function () {
-    return view('catalogo');
+Route::resource('/catalogo', 'CatalogoController')->middleware('auth');
+
+Route::get('catalogo/rubro/{rubro}', function ($rubro) {
+    $rubros = DB::table('stocks')
+        ->select('rubro')
+        ->groupBy('rubro')
+        ->get();
+    $stock = DB::table('stocks')
+        ->where('rubro', $rubro)
+        ->get();
+    return view('catalogo', compact('stock', 'rubros'));    
 })->middleware('auth');
 
 //Route::apiResource('/api/stock', 'StockController');
@@ -40,9 +49,9 @@ Route::get('stock/rubro/{rubro}', function ($rubro) {
         ->groupBy('rubro')
         ->get();
     $stock = DB::table('stocks')
-            ->where('rubro', $rubro)
-            ->get();
+        ->where('rubro', $rubro)
+        ->get();
     return view('stock.index', compact('stock', 'rubros'));    
-});
+})->middleware('auth');
 
 Route::resource('/pedidos', 'PedidosController')->middleware('auth');
