@@ -8,6 +8,7 @@ use App\Stock;
 use App\Http\Resources\StockResource;
 use App\Exports\StockExport;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Auth;
 
 class StockController extends Controller
 {

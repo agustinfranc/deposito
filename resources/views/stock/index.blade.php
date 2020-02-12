@@ -33,14 +33,19 @@
                         @foreach($stock as $item)
                             {{-- Ejemplo --}}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-
+                                
+                                @if ($item->cantidad == 0)
+                                    <button class="btn btn-outline-danger mr-2">{{ $item->cantidad }}</button>
+                                @else
+                                    <button class="btn btn-outline-info mr-2">{{ $item->cantidad }}</button>
+                                @endif
                                 <span class="font-weight-bold">#{{ $item->codigo }}</span>
                                 <span>{{ $item->detalle }}</span>
                                 <span>{{ $item->rubro }}</span>
 
                                 <div class="float-right">
-                                    <button class="btn btn-outline-info mr-2">{{ $item->cantidad }}</button>
 
+                                    @if (auth()->user()->permiso)
                                     <a href="{{ route('stock.edit', $item->id) }}" class="btn btn-warning btn-sm mr-2"><i class="material-icons">edit</i></a>
 
                                     <form action="{{ route('stock.destroy', $item->id) }}" class="d-inline" method="POST">
@@ -48,6 +53,11 @@
                                         @csrf
                                         <button class="btn btn-danger btn-sm" type="submit"><i class="material-icons">delete</i></button>
                                     </form>
+                                    @else
+                                        <button class="btn btn-warning btn-sm mr-2"><i class="material-icons">remove</i></button>
+                                        <button class="btn btn-outline-secondary mr-2">0</button>
+                                        <button class="btn btn-warning btn-sm"><i class="material-icons">add</i></button>
+                                    @endif
 
                                 </div>
                                 
