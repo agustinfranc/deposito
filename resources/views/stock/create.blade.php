@@ -40,6 +40,9 @@
 
             </div>
         </div>
+        <div class="d-flex flex-row-reverse">
+            <a href="{{ route('stock.index') }}" class="btn btn-outline-primary">Volver</a>
+        </div>
     </div>
 </div>
 @endsection

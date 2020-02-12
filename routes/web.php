@@ -54,4 +54,6 @@ Route::get('stock/rubro/{rubro}', function ($rubro) {
     return view('stock.index', compact('stock', 'rubros'));    
 })->middleware('auth');
 
+Route::get('exportar/stock', 'StockController@export')->middleware('auth');
+
 Route::resource('/pedidos', 'PedidosController')->middleware('auth');

@@ -16,11 +16,12 @@
 
                 <div class="card-body">
 
-                    <div class="d-flex align-items-end flex-column bd-highlight mb-3">
-                        <a name="todos" id="todos" class="btn btn-primary mr-1" href="{{ route('stock.create') }}" role="button">Nuevo</a>
+                    <div class="d-flex flex-row-reverse mb-3">
+                        <a class="btn btn-outline-primary mr-1" href="{{ route('stock.create') }}" role="button">Exportar</a>
+                        <a class="btn btn-primary mr-1" href="{{ route('stock.create') }}" role="button">Nuevo</a>
                     </div>
 
-                    <div id="rubros">
+                    <div id="rubros" class="">
                         <a name="todos" id="todos" class="btn btn-outline-primary mr-1" href="{{ route('stock.index') }}" role="button">Todos</a>
                         @foreach($rubros as $item)
                             {{-- Ejemplo --}}
@@ -32,7 +33,10 @@
                         @foreach($stock as $item)
                             {{-- Ejemplo --}}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{ $item->detalle }}
+
+                                <span class="font-weight-bold">#{{ $item->codigo }}</span>
+                                <span>{{ $item->detalle }}</span>
+                                <span>{{ $item->rubro }}</span>
 
                                 <div class="float-right">
                                     <button class="btn btn-outline-info mr-2">{{ $item->cantidad }}</button>

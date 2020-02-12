@@ -40,10 +40,13 @@
                             <label for="cantidad">Cantidad</label>
                             <input type="number" class="form-control" id="cantidad" name="cantidad" value="{{ $stock->cantidad }}" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
                     </form>
 
             </div>
+        </div>
+        <div class="d-flex flex-row-reverse">
+            <a href="{{ route('stock.index') }}" class="btn btn-outline-primary">Volver</a>
         </div>
     </div>
 </div>

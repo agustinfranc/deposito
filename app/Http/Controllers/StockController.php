@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Stock;
 use App\Http\Resources\StockResource;
+use App\Exports\StockExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class StockController extends Controller
 {
@@ -125,5 +127,11 @@ class StockController extends Controller
         $stock->delete();
 
         return back()->with('mensaje', 'Articulo eliminado');
+    }
+
+
+    public function export()
+    {
+        return Excel::download(new StockExport, 'stock.xlsx');
     }
 }
