@@ -16,44 +16,21 @@
 })->middleware('auth'); */
 
 use App\Stock;
-use Illuminate\Support\Facades\DB;
+
+Auth::routes();
+//Auth::routes(['register' => false]);
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Auth::routes();
-
 Route::resource('/catalogo', 'CatalogoController')->middleware('auth');
-
-Route::get('catalogo/rubro/{rubro}', function ($rubro) {
-    $rubros = DB::table('stocks')
-        ->select('rubro')
-        ->groupBy('rubro')
-        ->get();
-    $stock = DB::table('stocks')
-        ->where('rubro', $rubro)
-        ->get();
-    return view('catalogo', compact('stock', 'rubros'));    
-})->middleware('auth');
 
 //Route::apiResource('/api/stock', 'StockController');
 //Route::resource('/api/stock', 'StockController')->middleware('auth');
-Route::resource('/stock', 'StockController')->middleware('auth');
 
-/* Route::get('/stock', function () {
-    return view('stock');
-})->middleware('auth'); */
+Route::resource('/stock', 'StockController');
 
-Route::get('stock/rubro/{rubro}', function ($rubro) {
-    $rubros = DB::table('stocks')
-        ->select('rubro')
-        ->groupBy('rubro')
-        ->get();
-    $stock = DB::table('stocks')
-        ->where('rubro', $rubro)
-        ->get();
-    return view('stock.index', compact('stock', 'rubros'));    
-})->middleware('auth');
+Route::get('stock/rubro/{rubro}', 'StockController@getStockPorRubro');
 
-Route::get('exportar/stock', 'StockController@export')->middleware('auth');
+Route::get('exportar/stock', 'StockController@export');
 
 Route::resource('/pedidos', 'PedidosController')->middleware('auth');

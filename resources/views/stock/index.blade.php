@@ -17,7 +17,7 @@
                 <div class="card-body">
 
                     <div class="d-flex flex-row-reverse mb-3">
-                        <a class="btn btn-outline-primary mr-1" href="{{ route('stock.create') }}" role="button">Exportar</a>
+                        <a class="btn btn-outline-primary mr-1" href="exportar/stock" role="button">Exportar</a>
                         <a class="btn btn-primary mr-1" href="{{ route('stock.create') }}" role="button">Nuevo</a>
                     </div>
 
@@ -29,7 +29,7 @@
                         @endforeach
                     </div>
 
-                    <ul id="lista-productos" class="list-group mt-3">
+                    <ul id="lista-productos" class="list-group my-5">
                         @foreach($stock as $item)
                             {{-- Ejemplo --}}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
@@ -46,13 +46,13 @@
                                 <div class="float-right">
 
                                     @if (auth()->user()->permiso)
-                                    <a href="{{ route('stock.edit', $item->id) }}" class="btn btn-warning btn-sm mr-2"><i class="material-icons">edit</i></a>
+                                        <a href="{{ route('stock.edit', $item->id) }}" class="btn btn-warning btn-sm mr-2"><i class="material-icons">edit</i></a>
 
-                                    <form action="{{ route('stock.destroy', $item->id) }}" class="d-inline" method="POST">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button class="btn btn-danger btn-sm" type="submit"><i class="material-icons">delete</i></button>
-                                    </form>
+                                        <form action="{{ route('stock.destroy', $item->id) }}" class="d-inline" method="POST">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button class="btn btn-danger btn-sm" type="submit"><i class="material-icons">delete</i></button>
+                                        </form>
                                     @else
                                         <button class="btn btn-warning btn-sm mr-2"><i class="material-icons">remove</i></button>
                                         <button class="btn btn-outline-secondary mr-2">0</button>
@@ -65,11 +65,18 @@
                         @endforeach
                     </ul>
 
+                    {{ $stock->links() }}
                 </div>
             </div>
         </div>
     </div>
+
 </div>
+@if (!auth()->user()->permiso)
+    <div class="fixed-bottom container pb-3">
+        <button class="btn btn-primary btn-lg btn-block">Pedir</button>
+    </div>
+@endif
 @endsection
 
 {{-- @push('scripts')

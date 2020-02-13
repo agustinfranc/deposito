@@ -13,13 +13,14 @@ class StockExport implements FromCollection, WithHeadings
         return [
             'Codigo',
             'Detalle',
+            'Rubro',
             'Cantidad',
         ];
     }
 
     public function collection()
     {
-        return Stock::get(['codigo','detalle','cantidad']);
+        return Stock::get(['codigo','detalle','rubro','cantidad']);
         //return Stock::all();
     }
 }

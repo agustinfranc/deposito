@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App;
 use App\Stock;
 use App\Http\Resources\StockResource;
 use App\Exports\StockExport;
@@ -12,11 +13,11 @@ use Illuminate\Support\Facades\Auth;
 
 class StockController extends Controller
 {
-    /* public function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
     }
-    public function __construct()
+    /* public function __construct()
     {
         $this->middleware('auth:api');
     } */
@@ -34,11 +35,13 @@ class StockController extends Controller
         //$usuarioEmail = auth()->user()->email;
         //$stock = Stock::where('usuario', $usuarioEmail)->paginate(10);
 
-        $rubros = DB::table('stocks')
-                ->select('rubro')
+        $rubros = Stock::
+                select('rubro')
                 ->groupBy('rubro')
-                ->get();
-        $stock = DB::table('stocks')->get();
+                ->paginate(20);
+
+        $stock = Stock::paginate(20);
+
         return view('stock.index', compact('stock', 'rubros'));    
     }
 
@@ -128,6 +131,15 @@ class StockController extends Controller
         $stock->delete();
 
         return back()->with('mensaje', 'Articulo eliminado');
+    }
+
+
+    public function getStockPorRubro($rubro)
+    {
+        $rubros = Stock::select('rubro')->groupBy('rubro')->paginate(10);
+        $stock = Stock::where('rubro', $rubro)->paginate(10);
+        
+        return view('stock.index', compact('stock', 'rubros')); 
     }
 
 

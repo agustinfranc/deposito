@@ -12,37 +12,57 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Pedidos</div>
+
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="activos-tab" data-toggle="tab" href="#activos" role="tab" aria-controls="activos" aria-selected="true">Activos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="finalizados-tab" data-toggle="tab" href="#finalizados" role="tab" aria-controls="finalizados" aria-selected="false">Finalizados</a>
+                    </li>
+                    </li>
+                </ul>
 
                 <div class="card-body">
 
-                    <div class="d-flex align-items-end flex-column bd-highlight mb-3">
-                        <a name="todos" id="todos" class="btn btn-primary mr-1" href="{{ route('pedidos.create') }}" role="button">Nuevo</a>
+                    <div class="tab-content" id="myTabContent">
+
+                        <div class="tab-pane fade show active" id="activos" role="tabpanel" aria-labelledby="activos-tab">
+                            <div class="d-flex align-items-end flex-column bd-highlight mb-3">
+                                <a name="todos" id="todos" class="btn btn-primary mr-1 disabled" href="{{ route('pedidos.create') }}" role="button">Nuevo</a>
+                            </div>
+        
+                            <ul id="lista-productos" class="list-group mt-3">
+                                @foreach($pedidos as $item)
+                                    {{-- Ejemplo --}}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ $item->detalle }}
+        
+                                        <div class="float-right">
+        
+                                            <a href="{{ route('pedidos.edit', $item) }}" class="btn btn-warning btn-sm mr-2"><i class="material-icons">edit</i></a>
+        
+                                            <form action="{{ route('pedidos.destroy', $item) }}" class="d-inline" method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button class="btn btn-danger btn-sm" type="submit"><i class="material-icons">delete</i></button>
+                                            </form>
+        
+                                        </div>
+                                        
+                                    </li>
+                                @endforeach
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane fade active" id="finalizados" role="tabpanel" aria-labelledby="finalizados-tab">
+                            Pedidos Finalizados
+                        </div>
+
                     </div>
 
-                    <ul id="lista-productos" class="list-group mt-3">
-                        @foreach($pedidos as $item)
-                            {{-- Ejemplo --}}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{ $item->detalle }}
-
-                                <div class="float-right">
-
-                                    <a href="{{ route('pedidos.edit', $item) }}" class="btn btn-warning btn-sm mr-2"><i class="material-icons">edit</i></a>
-
-                                    <form action="{{ route('pedidos.destroy', $item) }}" class="d-inline" method="POST">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button class="btn btn-danger btn-sm" type="submit"><i class="material-icons">delete</i></button>
-                                    </form>
-
-                                </div>
-                                
-                            </li>
-                        @endforeach
-                    </ul>
-
                 </div>
+                
             </div>
         </div>
     </div>
