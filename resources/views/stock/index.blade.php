@@ -54,9 +54,19 @@
                                             <button class="btn btn-danger btn-sm" type="submit"><i class="material-icons">delete</i></button>
                                         </form>
                                     @else
-                                        <button class="btn btn-warning btn-sm mr-2"><i class="material-icons">remove</i></button>
-                                        <button class="btn btn-outline-secondary mr-2">0</button>
-                                        <button class="btn btn-warning btn-sm"><i class="material-icons">add</i></button>
+                                        <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
+                                            @method('PUT')
+                                            @csrf
+                                            <input type="hidden" name="accion" value="quitado">
+                                            <button class="btn btn-warning btn-sm mr-2" type="submit"><i class="material-icons">remove</i></button>
+                                        </form>
+                                        <button class="btn btn-outline-secondary mr-2">{{ $item->carrito }}</button>
+                                        <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
+                                            @method('PUT')
+                                            @csrf
+                                            <input type="hidden" name="accion" value="agregado">
+                                            <button class="btn btn-warning btn-sm mr-2" type="submit"><i class="material-icons">add</i></button>
+                                        </form>
                                     @endif
 
                                 </div>
@@ -74,7 +84,7 @@
 </div>
 @if (!auth()->user()->permiso)
     <div class="fixed-bottom container pb-3">
-        <button class="btn btn-primary btn-lg btn-block">Pedir</button>
+    <button class="btn btn-primary btn-lg btn-block">Pedir ${{ $total }}</button>
     </div>
 @endif
 @endsection

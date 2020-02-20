@@ -27,10 +27,15 @@ Route::resource('/catalogo', 'CatalogoController')->middleware('auth');
 //Route::apiResource('/api/stock', 'StockController');
 //Route::resource('/api/stock', 'StockController')->middleware('auth');
 
-Route::resource('/stock', 'StockController');
+/* Route::resource('/stock', 'StockController');
+Route::resource('/carrito', 'CarritoController')->middleware('auth'); */
+
+Route::resources([
+    'stock' => 'StockController',
+    'carrito' => 'CarritoController',
+    'pedidos' => 'PedidosController'
+]);
 
 Route::get('stock/rubro/{rubro}', 'StockController@getStockPorRubro');
 
 Route::get('exportar/stock', 'StockController@export');
-
-Route::resource('/pedidos', 'PedidosController')->middleware('auth');

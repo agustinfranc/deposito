@@ -42,7 +42,42 @@ class StockController extends Controller
 
         $stock = Stock::paginate(20);
 
-        return view('stock.index', compact('stock', 'rubros'));    
+        $array_stock = [];
+
+        // TODO: foreach stock chequear si existe en la sesion (carrito) y si existe agregar la cantidad
+        
+        $total = 0;
+        $carrito = session('carrito', null);
+        if ($carrito) foreach ($carrito as $item) {
+            if ($item["cantidad"] > 0)
+                $total += $item["precio"];
+        }
+
+        foreach ($stock as $item) {
+
+            $item->carrito = 0;
+
+            if ($carrito) 
+                foreach ($carrito as $key)
+                    if ($item->id == $key["id"])
+                        $item->carrito = $key["cantidad"];
+            
+            $array = [
+                'id' => $item->id,
+                'codigo' => $item->codigo,
+                'detalle' => $item->detalle,
+                'rubro' => $item->rubro,
+                'precio' => $item->precio,
+                'cantidad' => 0
+            ];
+            array_push($array_stock, $array);
+        }
+
+        if (!session()->has('carrito')) {
+            session(['carrito' => $array_stock]);
+        }
+
+        return view('stock.index', compact('stock', 'rubros', 'carrito', 'total'));    
     }
 
     /**
