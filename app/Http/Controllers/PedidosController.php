@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\DB;
 
 class PedidosController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -41,7 +46,22 @@ class PedidosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $pedido = new Pedido();
+        
+        $total = 0;
+        $carrito = session('carrito', null);
+        if ($carrito) foreach ($carrito as $item) {
+            if ($item["cantidad"] > 0)
+                $total += $item["precio"] * $item["cantidad"];
+        }
+
+        $pedido->email = auth()->user()->email;
+        $pedido->total = $total;
+        $pedido->fecha = date("Y-m-d");
+        $pedido->save();
+
+        return back()->with('mensaje', 'Pedido creado');
+
     }
 
     /**

@@ -42,6 +42,7 @@
                                 <span class="font-weight-bold">#{{ $item->codigo }}</span>
                                 <span>{{ $item->detalle }}</span>
                                 <span>{{ $item->rubro }}</span>
+                                <span>${{ $item->precio }}</span>
 
                                 <div class="float-right">
 
@@ -84,7 +85,7 @@
 </div>
 @if (!auth()->user()->permiso)
     <div class="fixed-bottom container pb-3">
-    <button class="btn btn-primary btn-lg btn-block">Pedir ${{ $total }}</button>
+    <a href="{{ route('carrito.index') }}" class="btn btn-primary btn-lg btn-block">Pedir ${{ $total }}</a>
     </div>
 @endif
 @endsection

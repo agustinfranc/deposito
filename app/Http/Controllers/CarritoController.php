@@ -7,6 +7,11 @@ use App\Stock;
 
 class CarritoController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +19,16 @@ class CarritoController extends Controller
      */
     public function index()
     {
-        //
+        $carrito = session('carrito', null);
+        if ($carrito) {
+            $carrito = session('carrito');
+            $total = 0;
+            foreach ($carrito as $item)
+                if ($item["cantidad"] > 0)
+                    $total += $item["precio"] * $item["cantidad"];
+        }
+
+        return view('carrito.index', compact('carrito', 'total'));    
     }
 
     /**
@@ -77,14 +91,17 @@ class CarritoController extends Controller
             foreach ($carrito as $item => $value) {
                 if ($value["id"] == $id) {
 
-                    if ($accion == 'agregado')
+                    if ($accion == 'agregado') {
                         $carrito[$item]["cantidad"]++;
-                    else if ($carrito[$item]["cantidad"] > 0)
+                    }
+                    else if ($carrito[$item]["cantidad"] > 0) {
                         $carrito[$item]["cantidad"]--;
+                    }
                     
                     session(['carrito' => $carrito]);
                     return back()->with('mensaje', 'Articulo ' . $accion . ': ' . $value["detalle"]);
                 }
+                
             }
             return back()->with('mensaje', 'error: no se encuentra el item');
         }

@@ -49,7 +49,7 @@ class StockController extends Controller
         $carrito = session('carrito', null);
         if ($carrito) foreach ($carrito as $item) {
             if ($item["cantidad"] > 0)
-            $total += $item["precio"];
+                $total += $item["precio"] * $item["cantidad"];
         }
         
         $array_stock = [];
