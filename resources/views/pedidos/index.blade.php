@@ -29,26 +29,36 @@
 
                         <div class="tab-pane fade show active" id="activos" role="tabpanel" aria-labelledby="activos-tab">
                             <div class="d-flex align-items-end flex-column bd-highlight mb-3">
-                                <a name="todos" id="todos" class="btn btn-primary mr-1 disabled" href="{{ route('pedidos.create') }}" role="button">Nuevo</a>
+                                <a name="todos" id="todos" class="btn btn-primary mr-1" href="{{ route('stock.index') }}" role="button">Nuevo</a>
                             </div>
         
                             <ul id="lista-productos" class="list-group mt-3">
                                 @foreach($pedidos as $item)
                                     {{-- Ejemplo --}}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        {{ $item->detalle }}
+                                        <strong>#{{ $item->id }}</strong>
+                                        <span>{{ $item->fecha }}</span>
+                                        <span>${{ $item->total }}</span>
         
                                         <div class="float-right">
-        
-                                            <a href="{{ route('pedidos.edit', $item) }}" class="btn btn-warning btn-sm mr-2"><i class="material-icons">edit</i></a>
-        
-                                            <form action="{{ route('pedidos.destroy', $item) }}" class="d-inline" method="POST">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button class="btn btn-danger btn-sm" type="submit"><i class="material-icons">delete</i></button>
-                                            </form>
+            
+                                            <a href="{{ route('pedidos.show', $item->id) }}" class="mr-2"><i class="material-icons">more</i></a>
         
                                         </div>
+
+                                        @if (auth()->user()->permiso)
+                                            <div class="float-right">
+            
+                                                <a href="{{ route('pedidos.edit', $item->id) }}" class="btn btn-warning btn-sm mr-2"><i class="material-icons">edit</i></a>
+            
+                                                <form action="{{ route('pedidos.destroy', $item->id) }}" class="d-inline" method="POST">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <button class="btn btn-danger btn-sm" type="submit"><i class="material-icons">delete</i></button>
+                                                </form>
+            
+                                            </div>
+                                        @endif
                                         
                                     </li>
                                 @endforeach

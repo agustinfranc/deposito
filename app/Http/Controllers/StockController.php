@@ -35,33 +35,32 @@ class StockController extends Controller
         //$usuarioEmail = auth()->user()->email;
         //$stock = Stock::where('usuario', $usuarioEmail)->paginate(10);
 
-        $rubros = Stock::
-                select('rubro')
-                ->groupBy('rubro')
-                ->paginate(20);
+        $rubros = Stock::select('rubro')
+            ->groupBy('rubro')
+            ->paginate(20);
 
         $stock = Stock::paginate(20);
 
-        
+
         // TODO: foreach stock chequear si existe en la sesion (carrito) y si existe agregar la cantidad
-        
+
         $total = 0;
         $carrito = session('carrito', null);
         if ($carrito) foreach ($carrito as $item) {
             if ($item["cantidad"] > 0)
                 $total += $item["precio"] * $item["cantidad"];
         }
-        
+
         $array_stock = [];
         foreach ($stock as $item) {
 
             $item->carrito = 0;
 
-            if ($carrito) 
+            if ($carrito)
                 foreach ($carrito as $key)
                     if ($item->id == $key["id"])
                         $item->carrito = $key["cantidad"];
-            
+
             $array = [
                 'id' => $item->id,
                 'codigo' => $item->codigo,
@@ -77,7 +76,7 @@ class StockController extends Controller
             session(['carrito' => $array_stock]);
         }
 
-        return view('stock.index', compact('stock', 'rubros', 'carrito', 'total'));    
+        return view('stock.index', compact('stock', 'rubros', 'carrito', 'total'));
     }
 
     /**
@@ -186,11 +185,11 @@ class StockController extends Controller
 
             $item->carrito = 0;
 
-            if ($carrito) 
+            if ($carrito)
                 foreach ($carrito as $key)
                     if ($item->id == $key["id"])
                         $item->carrito = $key["cantidad"];
-            
+
             $array = [
                 'id' => $item->id,
                 'codigo' => $item->codigo,
@@ -201,8 +200,8 @@ class StockController extends Controller
             ];
             array_push($array_stock, $array);
         }
-        
-        return view('stock.index', compact('stock', 'rubros', 'total')); 
+
+        return view('stock.index', compact('stock', 'rubros', 'total'));
     }
 
 

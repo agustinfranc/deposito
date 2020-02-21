@@ -17,7 +17,7 @@
 
 use App\Stock;
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 //Auth::routes(['register' => false]);
 
 Route::get('/', 'HomeController@index')->name('home');

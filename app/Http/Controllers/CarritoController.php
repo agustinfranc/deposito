@@ -11,7 +11,7 @@ class CarritoController extends Controller
     {
         $this->middleware('auth');
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -19,16 +19,23 @@ class CarritoController extends Controller
      */
     public function index()
     {
+        $cont = 0;
         $carrito = session('carrito', null);
         if ($carrito) {
-            $carrito = session('carrito');
             $total = 0;
-            foreach ($carrito as $item)
-                if ($item["cantidad"] > 0)
+            foreach ($carrito as $item) {
+                if ($item["cantidad"] > 0) {
+                    $cont++;
                     $total += $item["precio"] * $item["cantidad"];
+                }
+            }
+            if ($cont > 0)
+                return view('carrito.index', compact('carrito', 'total'));
+            else
+                return view('carrito.index')->with('mensaje', 'error: no existe carrito');
+        } else {
+            return view('carrito.index')->with('mensaje', 'error: no existe carrito');
         }
-
-        return view('carrito.index', compact('carrito', 'total'));    
     }
 
     /**
@@ -87,43 +94,24 @@ class CarritoController extends Controller
 
         $carrito = session('carrito', null);
 
-        if ($carrito) {
+        if ($carrito && sizeOf($carrito) > 0) {
             foreach ($carrito as $item => $value) {
                 if ($value["id"] == $id) {
 
                     if ($accion == 'agregado') {
                         $carrito[$item]["cantidad"]++;
-                    }
-                    else if ($carrito[$item]["cantidad"] > 0) {
+                    } else if ($carrito[$item]["cantidad"] > 0) {
                         $carrito[$item]["cantidad"]--;
                     }
-                    
+
                     session(['carrito' => $carrito]);
                     return back()->with('mensaje', 'Articulo ' . $accion . ': ' . $value["detalle"]);
                 }
-                
             }
             return back()->with('mensaje', 'error: no se encuentra el item');
-        }
-        else {
+        } else {
             return back()->with('mensaje', 'error: no existe carrito');
         }
-
-        /* if ($accion == "agregar") {
-        }
-        else {
-
-        }
-
-        $stock->codigo;
-        $stock->detalle;
-        $stock->rubro;
-        $stock->precio;
-        $stock->cantidad; */
-
-
-
-        //return back()->with('mensaje', 'Articulo agregado');
     }
 
     /**

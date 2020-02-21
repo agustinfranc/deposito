@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Pedido;
+use App\DetallePedido;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -50,15 +51,33 @@ class PedidosController extends Controller
         
         $total = 0;
         $carrito = session('carrito', null);
-        if ($carrito) foreach ($carrito as $item) {
-            if ($item["cantidad"] > 0)
-                $total += $item["precio"] * $item["cantidad"];
-        }
 
-        $pedido->email = auth()->user()->email;
-        $pedido->total = $total;
-        $pedido->fecha = date("Y-m-d");
-        $pedido->save();
+        if ($carrito)
+        {
+            $pedido->email = auth()->user()->email;
+            $pedido->nota = $request->nota;
+            $pedido->total = $request->total;
+            $pedido->fecha = date("Y-m-d");
+            $pedido->save();
+            $id = $pedido->id;
+            
+            foreach ($carrito as $item) {
+                if ($item["cantidad"] > 0) {
+                    $precio = $item["precio"] * $item["cantidad"];
+                    $total += $precio;
+                    
+                    $detalle_pedido = new DetallePedido();
+                    $detalle_pedido->id_pedido = $id;
+                    $detalle_pedido->codigo = $item["codigo"];
+                    $detalle_pedido->detalle = $item["detalle"];
+                    $detalle_pedido->cantidad = $item["cantidad"];
+                    $detalle_pedido->precio = $precio;
+                    
+                    $detalle_pedido->save();
+                }
+            }
+        }
+        
 
         return back()->with('mensaje', 'Pedido creado');
 

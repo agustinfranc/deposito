@@ -17,7 +17,7 @@
                 <div class="card-body">
 
                     <ul id="lista-productos" class="list-group mb-5">
-                        @if ($carrito)
+                        @if ($carrito ?? '')
                             @foreach($carrito as $item)
                                 @if ($item["cantidad"] > 0)
                                     {{-- Ejemplo --}}
@@ -54,7 +54,7 @@
                         @endif
                     </ul>
 
-                    @if ($carrito)
+                    @if ($carrito ?? '')
                         <div class="container mt-5">
 
                             <div class="my-5">
@@ -66,6 +66,9 @@
         
                             <form action="{{ route('pedidos.store') }}" method="post">
                                 @csrf
+
+                                <input type="hidden" name="total" value="{{ $total }}">
+
                                 <div class="form-group">
                                     <label for="formapago">Forma de pago</label>
                                     <select class="form-control" name="formapago" id="formapago">
