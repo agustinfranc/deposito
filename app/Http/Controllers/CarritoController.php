@@ -32,7 +32,7 @@ class CarritoController extends Controller
             if ($cont > 0)
                 return view('carrito.index', compact('carrito', 'total'));
             else
-                return view('carrito.index')->with('mensaje', 'error: no existe carrito');
+                return view('carrito.index')->with('mensaje', 'error: no existen items en carrito');
         } else {
             return view('carrito.index')->with('mensaje', 'error: no existe carrito');
         }
