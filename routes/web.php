@@ -16,6 +16,7 @@
 })->middleware('auth'); */
 
 use App\Stock;
+use App\Mail\WelcomeMail;
 
 Auth::routes(['verify' => true]);
 //Auth::routes(['register' => false]);
@@ -39,3 +40,7 @@ Route::resources([
 Route::get('stock/rubro/{rubro}', 'StockController@getStockPorRubro');
 
 Route::get('exportar/stock', 'StockController@export');
+
+Route::get('email/welcome', function() {
+    return new WelcomeMail();
+});

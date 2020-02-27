@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Pedido;
 use App\DetallePedido;
+use App\Mail\WelcomeMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class PedidosController extends Controller
 {
@@ -78,6 +80,9 @@ class PedidosController extends Controller
             }
 
             $request->session()->forget('carrito');
+
+            // Envio email
+            Mail::to(auth()->user()->email)->send(new WelcomeMail());
 
         }
         
