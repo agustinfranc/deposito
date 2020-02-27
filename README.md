@@ -1,12 +1,11 @@
 # Deposito
-### Laravel Application
+## Laravel Application
 
-## Comandos Basicos
+### Comandos Basicos
 
-```
-npm install
-```
+#### Instalar dependencias
+> npm install
+> composer install
 
-### composer install
-
-### php artisan serve
+#### Ejectutar aplicacion en ambiente local
+> php artisan serve
