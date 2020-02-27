@@ -16,10 +16,12 @@
 
                 <div class="card-body">
 
-                    <div class="d-flex flex-row-reverse mb-3">
-                        <a class="btn btn-outline-primary mr-1" href="exportar/stock" role="button">Exportar</a>
-                        <a class="btn btn-primary mr-1" href="{{ route('stock.create') }}" role="button">Nuevo</a>
-                    </div>
+                    @if (auth()->user()->permiso)
+                        <div class="d-flex flex-row-reverse mb-3">
+                            <a class="btn btn-outline-primary mr-1" href="exportar/stock" role="button">Exportar</a>
+                            <a class="btn btn-primary mr-1" href="{{ route('stock.create') }}" role="button">Nuevo</a>
+                        </div>
+                    @endif
 
                     <div id="rubros" class="">
                         <a name="todos" id="todos" class="btn btn-outline-primary mr-1" href="{{ route('stock.index') }}" role="button">Todos</a>
@@ -55,19 +57,27 @@
                                             <button class="btn btn-danger btn-sm" type="submit"><i class="material-icons">delete</i></button>
                                         </form>
                                     @else
-                                        <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
-                                            @method('PUT')
-                                            @csrf
-                                            <input type="hidden" name="accion" value="quitado">
-                                            <button class="btn btn-warning btn-sm mr-2" type="submit"><i class="material-icons">remove</i></button>
-                                        </form>
+                                        @if ($item->cantidad > 0 && $item->carrito > 0)
+                                            <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
+                                                @method('PUT')
+                                                @csrf
+                                                <input type="hidden" name="accion" value="quitado">
+                                                <button class="btn btn-warning btn-sm mr-2" type="submit"><i class="material-icons">remove</i></button>
+                                            </form>
+                                        @else
+                                            <button class="btn btn-warning btn-sm mr-2 disabled" type="submit"><i class="material-icons">remove</i></button>
+                                        @endif
                                         <button class="btn btn-outline-secondary mr-2">{{ $item->carrito }}</button>
-                                        <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
-                                            @method('PUT')
-                                            @csrf
-                                            <input type="hidden" name="accion" value="agregado">
-                                            <button class="btn btn-warning btn-sm mr-2" type="submit"><i class="material-icons">add</i></button>
-                                        </form>
+                                        @if ($item->cantidad > 0 && $item->cantidad > $item->carrito)
+                                            <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
+                                                @method('PUT')
+                                                @csrf
+                                                <input type="hidden" name="accion" value="agregado">
+                                                <button class="btn btn-warning btn-sm mr-2" type="submit"><i class="material-icons">add</i></button>
+                                            </form>
+                                        @else
+                                            <button class="btn btn-warning btn-sm mr-2 disabled" type="submit"><i class="material-icons">add</i></button>
+                                        @endif
                                     @endif
 
                                 </div>

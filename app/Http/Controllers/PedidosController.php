@@ -76,6 +76,9 @@ class PedidosController extends Controller
                     $detalle_pedido->save();
                 }
             }
+
+            $request->session()->forget('carrito');
+
         }
         
 
