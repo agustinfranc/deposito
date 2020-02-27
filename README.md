@@ -6,7 +6,7 @@
 #### Instalar dependencias
 ##### Node
 > npm install
-#### Composer
+##### Composer
 > composer install
 
 #### Ejectutar aplicacion en ambiente local
