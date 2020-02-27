@@ -1,7 +1,12 @@
-# deposito
+# Deposito
+### Laravel Application
 
-# npm install
+## Comandos Basicos
 
-# composer install
+```
+npm install
+```
 
-# php artisan serve
+### composer install
+
+### php artisan serve
