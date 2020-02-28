@@ -82,7 +82,7 @@ class PedidosController extends Controller
             $request->session()->forget('carrito');
 
             // Envio email
-            Mail::to(auth()->user()->email)->send(new WelcomeMail());
+            Mail::to(auth()->user()->email)->send(new SolicitudPedidoMail());
 
         }
         
