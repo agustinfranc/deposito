@@ -18,7 +18,7 @@
                     <a class="btn btn-primary" href=" {{ route('stock.index') }}" role="button">Ver Stock</a>
                     <a class="btn btn-primary" href="/pedidos" role="button">Ver Pedidos</a>
                     {{-- <a class="btn btn-primary disabled" href="/pedidos" role="button">Nuevo Pedido</a> --}}
-                
+
                     @if (!auth()->user()->permiso)
                         <a class="btn btn-primary" href=" {{ route('carrito.index') }}" role="button">Ver Carrito</a>
                     @endif

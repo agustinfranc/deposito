@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Pedido;
 use App\DetallePedido;
-use App\Mail\WelcomeMail;
+use App\Mail\SolicitudPedidoMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -28,7 +28,7 @@ class PedidosController extends Controller
         $pedidos = DB::table('pedidos')
             ->where('email', $email)
             ->get();
-        return view('pedidos.index', compact('pedidos'));    
+        return view('pedidos.index', compact('pedidos'));
     }
 
     /**
@@ -50,7 +50,7 @@ class PedidosController extends Controller
     public function store(Request $request)
     {
         $pedido = new Pedido();
-        
+
         $total = 0;
         $carrito = session('carrito', null);
 
@@ -62,19 +62,19 @@ class PedidosController extends Controller
             $pedido->fecha = date("Y-m-d");
             $pedido->save();
             $id = $pedido->id;
-            
+
             foreach ($carrito as $item) {
                 if ($item["cantidad"] > 0) {
                     $precio = $item["precio"] * $item["cantidad"];
                     $total += $precio;
-                    
+
                     $detalle_pedido = new DetallePedido();
                     $detalle_pedido->id_pedido = $id;
                     $detalle_pedido->codigo = $item["codigo"];
                     $detalle_pedido->detalle = $item["detalle"];
                     $detalle_pedido->cantidad = $item["cantidad"];
                     $detalle_pedido->precio = $precio;
-                    
+
                     $detalle_pedido->save();
                 }
             }
@@ -85,7 +85,6 @@ class PedidosController extends Controller
             Mail::to(auth()->user()->email)->send(new SolicitudPedidoMail());
 
         }
-        
 
         return back()->with('mensaje', 'Pedido creado');
 
