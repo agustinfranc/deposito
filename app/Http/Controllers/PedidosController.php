@@ -25,7 +25,7 @@ class PedidosController extends Controller
     {
         $email = auth()->user()->email;
 
-        if (!auth()->user()->administrator) {
+        if (auth()->user()->administrator) {
             $pedidos = DB::table('pedidos')
                 ->get();
         }
