@@ -25,9 +25,16 @@ class PedidosController extends Controller
     {
         $email = auth()->user()->email;
 
-        $pedidos = DB::table('pedidos')
-            ->where('email', $email)
-            ->get();
+        if (!auth()->user()->administrator) {
+            $pedidos = DB::table('pedidos')
+                ->get();
+        }
+        else {
+            $pedidos = DB::table('pedidos')
+                ->where('email', $email)
+                ->get();
+        }
+
         return view('pedidos.index', compact('pedidos'));
     }
 
