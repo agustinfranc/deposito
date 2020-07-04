@@ -57,7 +57,7 @@ class RegisterController extends Controller
             'cuit' => ['required', 'string'],
             'razon' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string', 'max:255'],
-            'telefono' => ['required', 'string', 'max:255'],
+            'phone' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
     }
@@ -77,7 +77,7 @@ class RegisterController extends Controller
             'cuit' => $data['cuit'],
             'razon' => $data['razon'],
             'address' => $data['address'],
-            'telefono' => $data['telefono'],
+            'phone' => $data['phone'],
             'password' => Hash::make($data['password']),
             'api_token' => Str::random(80),
         ]);

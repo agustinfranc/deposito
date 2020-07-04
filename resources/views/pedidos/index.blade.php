@@ -46,7 +46,7 @@
         
                                         </div>
 
-                                        @if (auth()->user()->permiso)
+                                        @if (auth()->user()->administrator)
                                             <div class="float-right">
             
                                                 <a href="{{ route('pedidos.edit', $item->id) }}" class="btn btn-warning btn-sm mr-2"><i class="material-icons">edit</i></a>

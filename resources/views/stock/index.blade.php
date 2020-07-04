@@ -16,7 +16,7 @@
 
                 <div class="card-body">
 
-                    @if (auth()->user()->permiso)
+                    @if (auth()->user()->administrator)
                         <div class="d-flex flex-row-reverse mb-3">
                             <a class="btn btn-outline-primary mr-1" href="exportar/stock" role="button">Exportar</a>
                             <a class="btn btn-primary mr-1" href="{{ route('stock.create') }}" role="button">Nuevo</a>
@@ -48,7 +48,7 @@
 
                                 <div class="float-right">
 
-                                    @if (auth()->user()->permiso)
+                                    @if (auth()->user()->administrator)
                                         <a href="{{ route('stock.edit', $item->id) }}" class="btn btn-warning btn-sm mr-2"><i class="material-icons">edit</i></a>
 
                                         <form action="{{ route('stock.destroy', $item->id) }}" class="d-inline" method="POST">
@@ -93,7 +93,7 @@
     </div>
 
 </div>
-@if (!auth()->user()->permiso)
+@if (!auth()->user()->administrator)
     <div class="fixed-bottom container pb-3">
     <a href="{{ route('carrito.index') }}" class="btn btn-primary btn-lg btn-block">Pedir ${{ $total }}</a>
     </div>

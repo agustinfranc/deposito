@@ -19,7 +19,7 @@
                     <a class="btn btn-primary" href="/pedidos" role="button">Ver Pedidos</a>
                     {{-- <a class="btn btn-primary disabled" href="/pedidos" role="button">Nuevo Pedido</a> --}}
 
-                    @if (!auth()->user()->permiso)
+                    @if (!auth()->user()->administrator)
                         <a class="btn btn-primary" href=" {{ route('carrito.index') }}" role="button">Ver Carrito</a>
                     @endif
                 </div>
