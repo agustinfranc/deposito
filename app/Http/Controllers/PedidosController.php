@@ -82,7 +82,8 @@ class PedidosController extends Controller
             $request->session()->forget('carrito');
 
             // Envio email
-            Mail::to(auth()->user()->email)->send(new SolicitudPedidoMail());
+            if (env("APP_ENV", "local") == 'local')
+                Mail::to(auth()->user()->email)->send(new SolicitudPedidoMail());
 
         }
 
