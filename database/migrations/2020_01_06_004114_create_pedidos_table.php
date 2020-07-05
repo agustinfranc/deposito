@@ -17,7 +17,6 @@ class CreatePedidosTable extends Migration
             $table->bigIncrements('id');
             $table->string('email');
             $table->decimal('total', 8, 2);
-            $table->date('fecha');
             $table->string('nota')->nullable();
             $table->integer('estado')->default(0);
             $table->timestamps();

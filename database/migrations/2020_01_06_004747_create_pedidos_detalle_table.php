@@ -18,12 +18,6 @@ class CreatePedidosDetalleTable extends Migration
             $table->integer('id_pedido');
             $table->integer('codigo');
             $table->string('detalle');
-            $table->tinyInteger('specs')->default(0);
-            $table->string('spec1')->nullable();
-            $table->string('spec2')->nullable();
-            $table->string('spec3')->nullable();
-            $table->tinyInteger('comentario')->default(0);
-            $table->string('comentario1')->nullable();
             $table->integer('cantidad');
             $table->decimal('precio', 8, 2);
             $table->tinyInteger('estado')->default(0);
