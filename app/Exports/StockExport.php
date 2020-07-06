@@ -20,7 +20,7 @@ class StockExport implements FromCollection, WithHeadings
 
     public function collection()
     {
-        return Stock::get(['codigo','detalle','rubro','cantidad']);
+        return Stock::get(['code','detail','rubro','quantity']);
         //return Stock::all();
     }
 }
