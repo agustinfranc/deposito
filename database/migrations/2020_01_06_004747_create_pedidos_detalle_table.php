@@ -15,12 +15,12 @@ class CreatePedidosDetalleTable extends Migration
     {
         Schema::create('pedidos_detalle', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('id_pedido');
-            $table->integer('codigo');
-            $table->string('detalle');
-            $table->integer('cantidad');
-            $table->decimal('precio', 8, 2);
-            $table->tinyInteger('estado')->default(0);
+            $table->integer('pedido_id');
+            $table->integer('code');
+            $table->string('detail');
+            $table->integer('quantity');
+            $table->decimal('price', 8, 2);
+            $table->tinyInteger('state')->default(0);
             $table->tinyInteger('checked')->default(0);
             $table->timestamps();
         });

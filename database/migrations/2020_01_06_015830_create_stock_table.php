@@ -17,10 +17,10 @@ class CreateStockTable extends Migration
             $table->bigIncrements('id');
             $table->string('rubro');
             $table->string('subrubro')->nullable();
-            $table->integer('codigo');
-            $table->string('detalle');
-            $table->integer('cantidad')->default(0);
-            $table->decimal('precio', 8, 2);
+            $table->integer('code');
+            $table->string('detail');
+            $table->integer('quantity')->default(0);
+            $table->decimal('price', 8, 2);
             $table->timestamps();
         });
     }

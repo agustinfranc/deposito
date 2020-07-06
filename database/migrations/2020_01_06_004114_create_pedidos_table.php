@@ -15,10 +15,9 @@ class CreatePedidosTable extends Migration
     {
         Schema::create('pedidos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('email');
-            $table->decimal('total', 8, 2);
-            $table->string('nota')->nullable();
-            $table->integer('estado')->default(0);
+            $table->bigIncrements('user_id');
+            $table->string('note')->nullable();
+            $table->integer('state_id')->default(0);
             $table->timestamps();
         });
     }
