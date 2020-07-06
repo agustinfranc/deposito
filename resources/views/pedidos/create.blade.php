@@ -19,21 +19,21 @@
                     <form action="{{ route('pedidos.store') }}" method="post">
                         @csrf
                         <div class="form-group">
-                          <label for="codigo">Codigo</label>
-                          <input type="number" class="form-control" id="codigo" name="codigo" aria-describedby="codigoHelp" required>
+                          <label for="code">Codigo</label>
+                          <input type="number" class="form-control" id="code" name="code" aria-describedby="codigoHelp" required>
                           {{-- <small id="codigoHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
                         </div>
                         <div class="form-group">
-                            <label for="detalle">Detalle</label>
-                            <input type="text" class="form-control" id="detalle" name="detalle" required>
+                            <label for="detail">Detalle</label>
+                            <input type="text" class="form-control" id="detail" name="detail" required>
                         </div>
                         <div class="form-group">
                             <label for="rubro">Rubro</label>
                             <input type="text" class="form-control" id="rubro" name="rubro" required>
                         </div>
                         <div class="form-group">
-                            <label for="precio">Precio</label>
-                            <input type="number" class="form-control" id="precio" name="precio" required>
+                            <label for="price">Precio</label>
+                            <input type="number" class="form-control" id="price" name="price" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>

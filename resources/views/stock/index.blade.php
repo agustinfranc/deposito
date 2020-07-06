@@ -36,15 +36,15 @@
                             {{-- Ejemplo --}}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
                                 
-                                @if ($item->cantidad == 0)
-                                    <button class="btn btn-outline-danger mr-2">{{ $item->cantidad }}</button>
+                                @if ($item->quantity == 0)
+                                    <button class="btn btn-outline-danger mr-2">{{ $item->quantity }}</button>
                                 @else
-                                    <button class="btn btn-outline-info mr-2">{{ $item->cantidad }}</button>
+                                    <button class="btn btn-outline-info mr-2">{{ $item->quantity }}</button>
                                 @endif
-                                <span class="font-weight-bold">#{{ $item->codigo }}</span>
-                                <span>{{ $item->detalle }}</span>
+                                <span class="font-weight-bold">#{{ $item->code }}</span>
+                                <span>{{ $item->detail }}</span>
                                 <span>{{ $item->rubro }}</span>
-                                <span>${{ $item->precio }}</span>
+                                <span>${{ $item->price }}</span>
 
                                 <div class="float-right">
 
@@ -57,7 +57,7 @@
                                             <button class="btn btn-danger btn-sm" type="submit"><i class="material-icons">delete</i></button>
                                         </form>
                                     @else
-                                        @if ($item->cantidad > 0 && $item->carrito > 0)
+                                        @if ($item->quantity > 0 && $item->carrito > 0)
                                             <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
                                                 @method('PUT')
                                                 @csrf
@@ -68,7 +68,7 @@
                                             <button class="btn btn-warning btn-sm mr-2 disabled" type="submit"><i class="material-icons">remove</i></button>
                                         @endif
                                         <button class="btn btn-outline-secondary mr-2">{{ $item->carrito }}</button>
-                                        @if ($item->cantidad > 0 && $item->cantidad > $item->carrito)
+                                        @if ($item->quantity > 0 && $item->quantity > $item->carrito)
                                             <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
                                                 @method('PUT')
                                                 @csrf

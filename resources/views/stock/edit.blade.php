@@ -20,25 +20,25 @@
                         @csrf
                         @method('PUT')
                         <div class="form-group">
-                          <label for="codigo">Codigo</label>
-                          <input type="number" class="form-control" id="codigo" name="codigo" value="{{ $stock->codigo }}" aria-describedby="codigoHelp" required>
+                          <label for="code">Codigo</label>
+                          <input type="number" class="form-control" id="code" name="code" value="{{ $stock->code }}" aria-describedby="codigoHelp" required>
                           {{-- <small id="codigoHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> --}}
                         </div>
                         <div class="form-group">
-                            <label for="detalle">Detalle</label>
-                            <input type="text" class="form-control" id="detalle" name="detalle" value="{{ $stock->detalle }}" required>
+                            <label for="detail">Detalle</label>
+                            <input type="text" class="form-control" id="detail" name="detail" value="{{ $stock->detail }}" required>
                         </div>
                         <div class="form-group">
                             <label for="rubro">Rubro</label>
                             <input type="text" class="form-control" id="rubro" name="rubro" value="{{ $stock->rubro }}" required>
                         </div>
                         <div class="form-group">
-                            <label for="precio">Precio</label>
-                            <input type="number" class="form-control" id="precio" name="precio" value="{{ $stock->precio }}" required>
+                            <label for="price">Precio</label>
+                            <input type="number" class="form-control" id="price" name="price" value="{{ $stock->price }}" required>
                         </div>
                         <div class="form-group">
-                            <label for="cantidad">Cantidad</label>
-                            <input type="number" class="form-control" id="cantidad" name="cantidad" value="{{ $stock->cantidad }}" required>
+                            <label for="quantity">Cantidad</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" value="{{ $stock->quantity }}" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Guardar</button>
                     </form>

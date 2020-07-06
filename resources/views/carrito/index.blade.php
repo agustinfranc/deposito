@@ -19,12 +19,12 @@
                     <ul id="lista-productos" class="list-group mb-5">
                         @if ($carrito ?? '')
                             @foreach($carrito as $item)
-                                @if ($item["cantidad"] > 0)
+                                @if ($item["quantity"] > 0)
                                     {{-- Ejemplo --}}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         
-                                        <span class="font-weight-bold">${{ $item["cantidad"] * $item["precio"] }}</span>
-                                        <span>{{ $item["detalle"] }}</span>
+                                        <span class="font-weight-bold">${{ $item["quantity"] * $item["price"] }}</span>
+                                        <span>{{ $item["detail"] }}</span>
 
                                         <div class="float-right">
 
@@ -34,7 +34,7 @@
                                                 <input type="hidden" name="accion" value="quitado">
                                                 <button class="btn btn-warning btn-sm mr-2" type="submit"><i class="material-icons">remove</i></button>
                                             </form>
-                                            <button class="btn btn-outline-secondary mr-2">{{ $item["cantidad"] }}</button>
+                                            <button class="btn btn-outline-secondary mr-2">{{ $item["quantity"] }}</button>
                                             <form action="{{ route('carrito.update', $item["id"]) }}" class="d-inline" method="POST">
                                                 @method('PUT')
                                                 @csrf

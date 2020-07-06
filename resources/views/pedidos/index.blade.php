@@ -36,10 +36,9 @@
 
                             <ul id="lista-productos" class="list-group mt-3">
                                 @foreach($pedidos as $item)
-                                    {{-- Ejemplo --}}
                                     <li class="list-group-item d-flex justify-content-between align-items-center">
                                         <strong>#{{ $item->id }}</strong>
-                                        <span>{{ $item->fecha }}</span>
+                                        <span>{{ $item->created_at }}</span>
                                         <span>${{ $item->total }}</span>
 
                                         <div class="float-right">
