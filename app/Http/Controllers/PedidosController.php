@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Pedido;
 use App\DetallePedido;
+use App\Http\Repositories\PedidosRepository;
 use App\Mail\SolicitudPedidoMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,19 +22,11 @@ class PedidosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(PedidosRepository $repository)
     {
-        $email = auth()->user()->email;
+        $pedidos = $repository->getPedidos(request()->all());
 
-        if (auth()->user()->administrator) {
-            $pedidos = DB::table('pedidos')
-                ->get();
-        }
-        else {
-            $pedidos = DB::table('pedidos')
-                ->where('email', $email)
-                ->get();
-        }
+        logger($pedidos);
 
         return view('pedidos.index', compact('pedidos'));
     }
@@ -58,29 +51,25 @@ class PedidosController extends Controller
     {
         $pedido = new Pedido();
 
-        $total = 0;
         $carrito = session('carrito', null);
 
         if ($carrito)
         {
-            $pedido->email = auth()->user()->email;
-            $pedido->nota = $request->nota;
-            $pedido->total = $request->total;
-            $pedido->fecha = date("Y-m-d");
+            $pedido->user_id = auth()->user()->id;
+            $pedido->note = $request->nota;
             $pedido->save();
             $id = $pedido->id;
 
             foreach ($carrito as $item) {
-                if ($item["cantidad"] > 0) {
-                    $precio = $item["precio"] * $item["cantidad"];
-                    $total += $precio;
+                if ($item["quantity"] > 0) {
+                    $price = $item["price"] * $item["quantity"];
 
                     $detalle_pedido = new DetallePedido();
-                    $detalle_pedido->id_pedido = $id;
-                    $detalle_pedido->codigo = $item["codigo"];
-                    $detalle_pedido->detalle = $item["detalle"];
-                    $detalle_pedido->cantidad = $item["cantidad"];
-                    $detalle_pedido->precio = $precio;
+                    $detalle_pedido->pedido_id = $id;
+                    $detalle_pedido->code = $item["code"];
+                    $detalle_pedido->detail = $item["detail"];
+                    $detalle_pedido->quantity = $item["quantity"];
+                    $detalle_pedido->price = $price;
 
                     $detalle_pedido->save();
                 }
@@ -104,9 +93,27 @@ class PedidosController extends Controller
      * @param  \App\Pedido  $pedidos
      * @return \Illuminate\Http\Response
      */
-    public function show(Pedido $pedidos)
+    public function show(Pedido $pedido)
     {
-        //
+        $detail = DB::table('pedidos_detalle')
+            ->where('pedido_id', $pedido->id)
+            ->get();
+
+        $pedido = Pedido::join('users', 'pedidos.user_id', '=', 'users.id')
+            ->select(
+                'pedidos.id'
+                , 'pedidos.user_id'
+                , 'pedidos.note'
+                , 'pedidos.state_id'
+                , 'pedidos.created_at'
+                , 'pedidos.updated_at'
+                , 'users.email'
+                , DB::raw('(SELECT SUM(price) FROM pedidos_detalle _pedidos_detalle WHERE _pedidos_detalle.pedido_id = pedidos.id) total')
+            )
+            ->where('pedidos.id', $pedido->id)
+            ->get()[0];
+
+        return view('pedidos.show', compact('pedido', 'detail'));
     }
 
     /**
@@ -115,9 +122,10 @@ class PedidosController extends Controller
      * @param  \App\Pedido  $pedidos
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pedido $pedidos)
+    public function edit(Pedido $pedido)
     {
-        //
+        $pedido = Pedido::findOrFail($pedido->id);
+        return view('pedidos.edit', compact('pedido'));
     }
 
     /**
