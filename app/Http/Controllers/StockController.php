@@ -42,13 +42,13 @@ class StockController extends Controller
         $stock = Stock::paginate(20);
 
 
-        // TODO: foreach stock chequear si existe en la sesion (carrito) y si existe agregar la cantidad
+        // TODO: foreach stock chequear si existe en la sesion (carrito) y si existe agregar la quantity
 
         $total = 0;
         $carrito = session('carrito', null);
         if ($carrito) foreach ($carrito as $item) {
-            if ($item["cantidad"] > 0)
-                $total += $item["precio"] * $item["cantidad"];
+            if ($item["quantity"] > 0)
+                $total += $item["price"] * $item["quantity"];
         }
 
         $array_stock = [];
@@ -59,15 +59,15 @@ class StockController extends Controller
             if ($carrito)
                 foreach ($carrito as $key)
                     if ($item->id == $key["id"])
-                        $item->carrito = $key["cantidad"];
+                        $item->carrito = $key["quantity"];
 
             $array = [
                 'id' => $item->id,
-                'codigo' => $item->codigo,
-                'detalle' => $item->detalle,
+                'code' => $item->code,
+                'detail' => $item->detail,
                 'rubro' => $item->rubro,
-                'precio' => $item->precio,
-                'cantidad' => 0
+                'price' => $item->price,
+                'quantity' => 0
             ];
             array_push($array_stock, $array);
         }
@@ -98,10 +98,10 @@ class StockController extends Controller
     public function store(Request $request)
     {
         $stock = new Stock();
-        $stock->codigo = $request->codigo;
-        $stock->detalle = $request->detalle;
+        $stock->code = $request->code;
+        $stock->detail = $request->detail;
         $stock->rubro = $request->rubro;
-        $stock->precio = $request->precio;
+        $stock->price = $request->price;
 
         $stock->usuario_alta = auth()->user()->email;
         $stock->save();
@@ -142,11 +142,11 @@ class StockController extends Controller
     public function update(Request $request, $id)
     {
         $stock = Stock::findOrFail($id);
-        $stock->codigo = $request->codigo;
-        $stock->detalle = $request->detalle;
+        $stock->code = $request->code;
+        $stock->detail = $request->detail;
         $stock->rubro = $request->rubro;
-        $stock->precio = $request->precio;
-        $stock->cantidad = $request->cantidad;
+        $stock->price = $request->price;
+        $stock->quantity = $request->quantity;
 
         $stock->save();
 
@@ -176,8 +176,8 @@ class StockController extends Controller
         $total = 0;
         $carrito = session('carrito', null);
         if ($carrito) foreach ($carrito as $item) {
-            if ($item["cantidad"] > 0)
-                $total += $item["precio"];
+            if ($item["quantity"] > 0)
+                $total += $item["price"];
         }
 
         $array_stock = [];
@@ -188,15 +188,15 @@ class StockController extends Controller
             if ($carrito)
                 foreach ($carrito as $key)
                     if ($item->id == $key["id"])
-                        $item->carrito = $key["cantidad"];
+                        $item->carrito = $key["quantity"];
 
             $array = [
                 'id' => $item->id,
-                'codigo' => $item->codigo,
-                'detalle' => $item->detalle,
+                'code' => $item->code,
+                'detail' => $item->detail,
                 'rubro' => $item->rubro,
-                'precio' => $item->precio,
-                'cantidad' => 0
+                'price' => $item->price,
+                'quantity' => 0
             ];
             array_push($array_stock, $array);
         }

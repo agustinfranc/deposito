@@ -24,9 +24,9 @@ class CarritoController extends Controller
         if ($carrito) {
             $total = 0;
             foreach ($carrito as $item) {
-                if ($item["cantidad"] > 0) {
+                if ($item["quantity"] > 0) {
                     $cont++;
-                    $total += $item["precio"] * $item["cantidad"];
+                    $total += $item["price"] * $item["quantity"];
                 }
             }
             if ($cont > 0)
@@ -99,13 +99,13 @@ class CarritoController extends Controller
                 if ($value["id"] == $id) {
 
                     if ($accion == 'agregado') {
-                        $carrito[$item]["cantidad"]++;
-                    } else if ($carrito[$item]["cantidad"] > 0) {
-                        $carrito[$item]["cantidad"]--;
+                        $carrito[$item]["quantity"]++;
+                    } else if ($carrito[$item]["quantity"] > 0) {
+                        $carrito[$item]["quantity"]--;
                     }
 
                     session(['carrito' => $carrito]);
-                    return back()->with('mensaje', 'Articulo ' . $accion . ': ' . $value["detalle"]);
+                    return back()->with('mensaje', 'Articulo ' . $accion . ': ' . $value["detail"]);
                 }
             }
             return back()->with('mensaje', 'error: no se encuentra el item');
