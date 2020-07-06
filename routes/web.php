@@ -15,21 +15,12 @@
     return view('home');
 })->middleware('auth'); */
 
-use App\Stock;
 use App\Mail\WelcomeMail;
 
 Auth::routes(['verify' => true]);
 //Auth::routes(['register' => false]);
 
 Route::get('/', 'HomeController@index')->name('home');
-
-Route::resource('/catalogo', 'CatalogoController')->middleware('auth');
-
-//Route::apiResource('/api/stock', 'StockController');
-//Route::resource('/api/stock', 'StockController')->middleware('auth');
-
-/* Route::resource('/stock', 'StockController');
-Route::resource('/carrito', 'CarritoController')->middleware('auth'); */
 
 Route::resources([
     'stock' => 'StockController',
