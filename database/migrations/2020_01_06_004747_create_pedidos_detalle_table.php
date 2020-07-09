@@ -14,7 +14,7 @@ class CreatePedidosDetalleTable extends Migration
     public function up()
     {
         Schema::create('pedidos_detalle', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->integer('pedido_id');
             $table->integer('code');
             $table->string('detail');
