@@ -25,7 +25,7 @@ Route::get('/', 'HomeController@index')->name('home');
 Route::resources([
     'stock' => 'StockController',
     'carrito' => 'CarritoController',
-    'pedidos' => 'PedidosController'
+    'orders' => 'OrderController'
 ]);
 
 Route::get('stock/rubro/{rubro}', 'StockController@getStockPorRubro');

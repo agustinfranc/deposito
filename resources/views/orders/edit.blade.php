@@ -8,16 +8,16 @@
             <div class="card">
 
                 <div class="card-body">
-                    <h2>Pedido #{{$pedido->id}}</h2>
-                    <span class="badge badge-primary">{{$pedido->email}}</span>
-                    {{-- <span class="badge badge-secondary">${{$pedido->total}}</span> --}}
-                    <span class="badge badge-secondary">{{$pedido->created_at}}</span>
+                    <h2>Pedido #{{$order->id}}</h2>
+                    <span class="badge badge-primary">{{$order->email}}</span>
+                    {{-- <span class="badge badge-secondary">${{$order->total}}</span> --}}
+                    <span class="badge badge-secondary">{{$order->created_at}}</span>
 
                     <div class="tab-content">
 
                         <div class="tab-pane fade show active" id="activos" role="tabpanel" aria-labelledby="activos-tab">
                             <ul id="lista-productos" class="list-group mt-3">
-                                <li class="list-group-item d-flex justify-content-between align-items-center">{{$pedido->email}}</li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">{{$order->email}}</li>
                             </ul>
                         </div>
 

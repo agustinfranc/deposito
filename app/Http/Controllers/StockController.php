@@ -102,8 +102,7 @@ class StockController extends Controller
         $stock->detail = $request->detail;
         $stock->rubro = $request->rubro;
         $stock->price = $request->price;
-
-        $stock->usuario_alta = auth()->user()->email;
+        $stock->created_by_id = auth()->user()->id;
         $stock->save();
 
         return back()->with('mensaje', 'Articulo creado');

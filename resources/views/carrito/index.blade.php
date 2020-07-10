@@ -64,7 +64,7 @@
         
                             <h5>Detalles Entrega</h5>
         
-                            <form action="{{ route('pedidos.store') }}" method="post">
+                            <form action="{{ route('orders.store') }}" method="post">
                                 @csrf
 
                                 <input type="hidden" name="total" value="{{ $total }}">
@@ -86,7 +86,7 @@
                                 </div>
 
                                 <div class="form-group my-5">
-                                    <button class="btn btn-primary btn-block" type="submit">Enviar Pedido</button>
+                                    <button class="btn btn-primary btn-block" type="submit">Enviar pedido</button>
                                 </div>
                             </form>
                         </div>

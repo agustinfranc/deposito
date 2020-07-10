@@ -2,15 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Pedido;
-use App\DetallePedido;
-use App\Http\Repositories\PedidosRepository;
+use App\Order;
+use App\OrderDetail;
+use App\Http\Repositories\OrderRepository;
 use App\Mail\SolicitudPedidoMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
-class PedidosController extends Controller
+class OrderController extends Controller
 {
     public function __construct()
     {
@@ -22,13 +22,13 @@ class PedidosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(PedidosRepository $repository)
+    public function index(OrderRepository $repository)
     {
-        $pedidos = $repository->getPedidos(request()->all());
+        $orders = $repository->getOrders(request()->all());
 
-        logger($pedidos);
+        //logger($orders);
 
-        return view('pedidos.index', compact('pedidos'));
+        return view('orders.index', compact('orders'));
     }
 
     /**
@@ -49,23 +49,23 @@ class PedidosController extends Controller
      */
     public function store(Request $request)
     {
-        $pedido = new Pedido();
+        $order = new Order();
 
         $carrito = session('carrito', null);
 
         if ($carrito)
         {
-            $pedido->user_id = auth()->user()->id;
-            $pedido->note = $request->nota;
-            $pedido->save();
-            $id = $pedido->id;
+            $order->user_id = auth()->user()->id;
+            $order->note = $request->nota;
+            $order->save();
+            $id = $order->id;
 
             foreach ($carrito as $item) {
                 if ($item["quantity"] > 0) {
                     $price = $item["price"] * $item["quantity"];
 
-                    $detalle_pedido = new DetallePedido();
-                    $detalle_pedido->pedido_id = $id;
+                    $detalle_pedido = new OrderDetail();
+                    $detalle_pedido->order_id = $id;
                     $detalle_pedido->code = $item["code"];
                     $detalle_pedido->detail = $item["detail"];
                     $detalle_pedido->quantity = $item["quantity"];
@@ -78,8 +78,8 @@ class PedidosController extends Controller
             $request->session()->forget('carrito');
 
             // Envio email
-            if (env("APP_ENV", "local") == 'local')
-                Mail::to(auth()->user()->email)->send(new SolicitudPedidoMail());
+            /* if (env("APP_ENV", "local") == 'local')
+                Mail::to(auth()->user()->email)->send(new SolicitudPedidoMail()); */
 
         }
 
@@ -90,52 +90,39 @@ class PedidosController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Pedido  $pedidos
+     * @param  \App\Order  $orders
      * @return \Illuminate\Http\Response
      */
-    public function show(Pedido $pedido)
+    public function show(Order $order, OrderRepository $repository)
     {
-        $detail = DB::table('pedidos_detalle')
-            ->where('pedido_id', $pedido->id)
-            ->get();
+        $data = $repository->getOrder(request()->all(), $order);
 
-        $pedido = Pedido::join('users', 'pedidos.user_id', '=', 'users.id')
-            ->select(
-                'pedidos.id'
-                , 'pedidos.user_id'
-                , 'pedidos.note'
-                , 'pedidos.state_id'
-                , 'pedidos.created_at'
-                , 'pedidos.updated_at'
-                , 'users.email'
-                , DB::raw('(SELECT SUM(price) FROM pedidos_detalle _pedidos_detalle WHERE _pedidos_detalle.pedido_id = pedidos.id) total')
-            )
-            ->where('pedidos.id', $pedido->id)
-            ->get()[0];
+        $order = $data['order'];
+        $detail = $data['detail'];
 
-        return view('pedidos.show', compact('pedido', 'detail'));
+        return view('orders.show', compact('order', 'detail'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Pedido  $pedidos
+     * @param  \App\Order  $orders
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pedido $pedido)
+    public function edit(Order $order)
     {
-        $pedido = Pedido::findOrFail($pedido->id);
-        return view('pedidos.edit', compact('pedido'));
+        $order = Order::findOrFail($order->id);
+        return view('orders.edit', compact('order'));
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Pedido  $pedidos
+     * @param  \App\Order  $orders
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Pedido $pedidos)
+    public function update(Request $request, Order $orders)
     {
         //
     }
@@ -143,10 +130,10 @@ class PedidosController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Pedido  $pedidos
+     * @param  \App\Order  $orders
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Pedido $pedidos)
+    public function destroy(Order $orders)
     {
         //
     }

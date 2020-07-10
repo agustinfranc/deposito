@@ -16,7 +16,7 @@
 
                 <div class="card-body">
 
-                    <form action="{{ route('pedidos.store') }}" method="post">
+                    <form action="{{ route('orders.store') }}" method="post">
                         @csrf
                         <div class="form-group">
                           <label for="code">Codigo</label>

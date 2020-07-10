@@ -26,16 +26,14 @@
                     <div id="rubros" class="">
                         <a name="todos" id="todos" class="btn btn-outline-primary mr-1" href="{{ route('stock.index') }}" role="button">Todos</a>
                         @foreach($rubros as $item)
-                            {{-- Ejemplo --}}
-                    <a name="" id="" class="btn btn-primary" href="/stock/rubro/{{ $item->rubro }}" role="button">{{ $item->rubro }}</a>
+                            <a name="" id="" class="btn btn-primary" href="/stock/rubro/{{ $item->rubro }}" role="button">{{ $item->rubro }}</a>
                         @endforeach
                     </div>
 
-                    <ul id="lista-productos" class="list-group my-5">
+                    {{-- <ul id="lista-productos" class="list-group my-5">
                         @foreach($stock as $item)
-                            {{-- Ejemplo --}}
                             <li class="list-group-item d-flex justify-content-between align-items-center">
-                                
+
                                 @if ($item->quantity == 0)
                                     <button class="btn btn-outline-danger mr-2">{{ $item->quantity }}</button>
                                 @else
@@ -81,14 +79,83 @@
                                     @endif
 
                                 </div>
-                                
+
                             </li>
                         @endforeach
-                    </ul>
+                    </ul> --}}
+
+                    <table class="table my-5">
+                        <thead>
+                            <tr>
+                            <th scope="col">Stock</th>
+                            <th scope="col">Codigo</th>
+                            <th scope="col">Detalle</th>
+                            <th scope="col">Rubro</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($stock as $item)
+                            <tr>
+                                @if ($item->quantity == 0)
+                                    <td class="text-danger">{{ $item->quantity }}</td>
+                                @else
+                                    <td class="text-primary">{{ $item->quantity }}</td>
+                                @endif
+                                <td class="font-weight-bold">#{{ $item->code }}</td>
+                                <td>{{ $item->detail }}</td>
+                                <td>{{ $item->rubro }}</td>
+                                <td>${{ $item->price }}</td>
+
+                                <td>
+                                    <span>
+                                        @if (auth()->user()->administrator)
+                                            <a href="{{ route('stock.edit', $item->id) }}" class="btn text-warning btn-sm mr-2"><i class="material-icons">edit</i></a>
+    
+                                            <form action="{{ route('stock.destroy', $item->id) }}" class="d-inline" method="POST">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button class="btn text-danger btn-sm disabled" type="submit"><i class="material-icons">delete</i></button>
+                                            </form>
+                                        @else
+                                            @if ($item->quantity > 0 && $item->carrito > 0)
+                                                <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
+                                                    @method('PUT')
+                                                    @csrf
+                                                    <input type="hidden" name="accion" value="quitado">
+                                                    <button class="btn text-warning btn-sm mr-2" type="submit"><i class="material-icons">remove</i></button>
+                                                </form>
+                                            @else
+                                                <button class="btn text-warning btn-sm mr-2 disabled" type="submit"><i class="material-icons">remove</i></button>
+                                            @endif
+                                            <a class="btn btn-outline-secondary mr-2">{{ $item->carrito }}</a>
+                                            @if ($item->quantity > 0 && $item->quantity > $item->carrito)
+                                                <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
+                                                    @method('PUT')
+                                                    @csrf
+                                                    <input type="hidden" name="accion" value="agregado">
+                                                    <button class="btn text-warning btn-sm mr-2" type="submit"><i class="material-icons">add</i></button>
+                                                </form>
+                                            @else
+                                                <button class="btn text-warning btn-sm mr-2 disabled" type="submit"><i class="material-icons">add</i></button>
+                                            @endif
+                                        @endif
+                                    </span>
+
+                                </td>
+
+                            </tr>
+                            @endforeach
+
+                        </tbody>
+                    </table>
 
                     {{ $stock->links() }}
+
                 </div>
             </div>
+
         </div>
     </div>
 
