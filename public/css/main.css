@@ -1,0 +1,23 @@
+.table td, .table th {
+    vertical-align: middle;
+}
+
+.table td span, .table th span {
+    display: block;
+}
+
+.table td .btn {
+    padding-top: 0;
+    padding-bottom: 0;
+    background-color: #fff;
+}
+
+.dropdown .dropdown-menu .dropdown-item i {
+    display: inline-block;
+    line-height: 0;
+    vertical-align: middle;
+    margin-right: 0.4rem;
+    position: relative;
+    top: -0.08rem;
+    font-size: 1.3rem;
+}
