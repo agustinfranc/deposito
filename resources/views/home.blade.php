@@ -14,12 +14,12 @@
                         </div>
                     @endif
 
-                    {{-- <a name="" id="" class="btn btn-primary disabled" href="/catalogo" role="button">Ver Catalogo</a> --}}
                     <a class="btn btn-primary" href=" {{ route('stock.index') }}" role="button">Ver Stock</a>
                     <a class="btn btn-primary" href="/orders" role="button">Ver Pedidos</a>
-                    {{-- <a class="btn btn-primary disabled" href="/orders" role="button">Nuevo Order</a> --}}
 
-                    @if (!auth()->user()->administrator)
+                    @if (auth()->user()->administrator)
+                        <a class="btn btn-primary" href="/current-account" role="button">Ver Cuenta Corriente</a>
+                    @else
                         <a class="btn btn-primary" href=" {{ route('carrito.index') }}" role="button">Ver Carrito</a>
                     @endif
                 </div>
