@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\OrderDetail;
+use App\OrderStatus;
 use App\Http\Repositories\OrderRepository;
 use App\Mail\SolicitudPedidoMail;
 use Illuminate\Http\Request;
@@ -125,6 +126,29 @@ class OrderController extends Controller
     public function update(Request $request, Order $orders)
     {
         //
+    }
+
+    public function updateState(Request $request, $id = null, $status_id = null)
+    {
+        if (!$id || !$status_id) return;
+
+        $order = Order::findOrFail($id);
+        $order->status_id = $status_id;
+        $order->save();
+
+        $status = OrderStatus::findOrFail($status_id);
+
+        // Resto Stock si el status es Facturado (id = 3)
+        if ($status_id == 3) {
+            $details = Order::findOrFail($id)->details();
+            if (!$details) return;
+
+            foreach ($details as $detail) {
+                logger($detail);
+            }
+        }
+
+        return back()->with('mensaje', 'Estado actualizado a ' . $status->status);
     }
 
     /**
