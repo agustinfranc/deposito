@@ -17,13 +17,18 @@ class CreateStocksTable extends Migration
             $table->increments('id');
             $table->string('rubro');
             $table->string('subrubro')->nullable();
-            $table->integer('code');
-            $table->string('detail');
-            $table->integer('quantity')->default(0);
+            $table->integer('code')->unique();
+            $table->string('detail')->unique();
+            $table->mediumInteger('quantity')->default(0);
             $table->decimal('price', 8, 2);
-            $table->integer('created_by_id');
+            $table->unsignedInteger('creator_id');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('creator_id')
+                ->references('id')->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
         });
     }
 

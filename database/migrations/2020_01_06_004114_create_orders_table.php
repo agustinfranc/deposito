@@ -15,11 +15,21 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('user_id');
+            $table->unsignedInteger('user_id');
             $table->string('note')->nullable();
-            $table->integer('status_id')->default(1);
+            $table->unsignedTinyInteger('status_id')->default(1);
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('status_id')
+                ->references('id')->on('order_statuses')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
+
+            $table->foreign('user_id')
+                ->references('id')->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('restrict');
         });
     }
 

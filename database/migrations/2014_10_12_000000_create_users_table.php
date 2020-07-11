@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('api_token', 80)->unique()->nullable()->default(null);
-            $table->integer('administrator')->default(0);
+            $table->unsignedTinyInteger('administrator')->default(0);
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
