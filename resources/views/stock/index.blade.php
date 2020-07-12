@@ -30,60 +30,6 @@
                         @endforeach
                     </div>
 
-                    {{-- <ul id="lista-productos" class="list-group my-5">
-                        @foreach($stock as $item)
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-
-                                @if ($item->quantity == 0)
-                                    <button class="btn btn-outline-danger mr-2">{{ $item->quantity }}</button>
-                                @else
-                                    <button class="btn btn-outline-info mr-2">{{ $item->quantity }}</button>
-                                @endif
-                                <span class="font-weight-bold">#{{ $item->code }}</span>
-                                <span>{{ $item->detail }}</span>
-                                <span>{{ $item->rubro }}</span>
-                                <span>${{ $item->price }}</span>
-
-                                <div class="float-right">
-
-                                    @if (auth()->user()->administrator)
-                                        <a href="{{ route('stock.edit', $item->id) }}" class="btn btn-warning btn-sm mr-2"><i class="material-icons">edit</i></a>
-
-                                        <form action="{{ route('stock.destroy', $item->id) }}" class="d-inline" method="POST">
-                                            @method('DELETE')
-                                            @csrf
-                                            <button class="btn btn-danger btn-sm" type="submit"><i class="material-icons">delete</i></button>
-                                        </form>
-                                    @else
-                                        @if ($item->quantity > 0 && $item->carrito > 0)
-                                            <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
-                                                @method('PUT')
-                                                @csrf
-                                                <input type="hidden" name="accion" value="quitado">
-                                                <button class="btn btn-warning btn-sm mr-2" type="submit"><i class="material-icons">remove</i></button>
-                                            </form>
-                                        @else
-                                            <button class="btn btn-warning btn-sm mr-2 disabled" type="submit"><i class="material-icons">remove</i></button>
-                                        @endif
-                                        <button class="btn btn-outline-secondary mr-2">{{ $item->carrito }}</button>
-                                        @if ($item->quantity > 0 && $item->quantity > $item->carrito)
-                                            <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
-                                                @method('PUT')
-                                                @csrf
-                                                <input type="hidden" name="accion" value="agregado">
-                                                <button class="btn btn-warning btn-sm mr-2" type="submit"><i class="material-icons">add</i></button>
-                                            </form>
-                                        @else
-                                            <button class="btn btn-warning btn-sm mr-2 disabled" type="submit"><i class="material-icons">add</i></button>
-                                        @endif
-                                    @endif
-
-                                </div>
-
-                            </li>
-                        @endforeach
-                    </ul> --}}
-
                     <table class="table my-5">
                         <thead>
                             <tr>
@@ -120,7 +66,7 @@
                                             </form>
                                         @else
                                             @if ($item->quantity > 0 && $item->carrito > 0)
-                                                <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
+                                                <form action="{{ route('orders.updateCarrito', $item->id) }}" class="d-inline" method="POST">
                                                     @method('PUT')
                                                     @csrf
                                                     <input type="hidden" name="accion" value="quitado">
@@ -131,7 +77,7 @@
                                             @endif
                                             <a class="btn btn-outline-secondary mr-2">{{ $item->carrito }}</a>
                                             @if ($item->quantity > 0 && $item->quantity > $item->carrito)
-                                                <form action="{{ route('carrito.update', $item->id) }}" class="d-inline" method="POST">
+                                                <form action="{{ route('orders.updateCarrito', $item->id) }}" class="d-inline" method="POST">
                                                     @method('PUT')
                                                     @csrf
                                                     <input type="hidden" name="accion" value="agregado">
@@ -159,10 +105,14 @@
         </div>
     </div>
 
+    <div class="d-flex flex-row-reverse mt-3">
+        <a href="{{ route('home') }}" class="btn btn-outline-primary">Volver</a>
+    </div>
+
 </div>
 @if (!auth()->user()->administrator)
     <div class="fixed-bottom container pb-3">
-    <a href="{{ route('carrito.index') }}" class="btn btn-primary btn-lg btn-block">Pedir ${{ $total }}</a>
+    <a href="{{ route('orders.create') }}" class="btn btn-primary btn-lg btn-block">Pedir ${{ $total }}</a>
     </div>
 @endif
 @endsection

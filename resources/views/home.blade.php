@@ -20,7 +20,7 @@
                     @if (auth()->user()->administrator)
                         <a class="btn btn-primary" href="/current-account" role="button">Ver Cuenta Corriente</a>
                     @else
-                        <a class="btn btn-primary" href=" {{ route('carrito.index') }}" role="button">Ver Carrito</a>
+                        <a class="btn btn-primary" href=" {{ route('orders.create') }}" role="button">Ver Carrito</a>
                     @endif
                 </div>
             </div>

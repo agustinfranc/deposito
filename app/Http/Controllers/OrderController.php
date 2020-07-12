@@ -7,8 +7,10 @@ use App\OrderDetail;
 use App\OrderStatus;
 use App\Http\Repositories\OrderRepository;
 use App\Mail\SolicitudPedidoMail;
+use App\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
@@ -39,7 +41,23 @@ class OrderController extends Controller
      */
     public function create()
     {
-        return view('stock.create');
+        $cont = 0;
+        $carrito = session('carrito', null);
+        if ($carrito) {
+            $total = 0;
+            foreach ($carrito as $item) {
+                if ($item["quantity"] > 0) {
+                    $cont++;
+                    $total += $item["price"] * $item["quantity"];
+                }
+            }
+            if ($cont > 0)
+                return view('orders.create', compact('carrito', 'total'));
+            else
+                return view('orders.create')->with('mensaje', 'error: no existen items en carrito');
+        } else {
+            return view('orders.create')->with('mensaje', 'error: no existe carrito');
+        }
     }
 
     /**
@@ -140,15 +158,43 @@ class OrderController extends Controller
 
         // Resto Stock si el status es Facturado (id = 3)
         if ($status_id == 3) {
-            $details = Order::findOrFail($id)->details();
-            if (!$details) return;
+            $details = Order::findOrFail($id)->details()->get();
 
             foreach ($details as $detail) {
-                logger($detail);
+                $stock = Stock::findOrFail($detail['code']);
+                $stock->quantity -= $detail['quantity'];
+                $stock->save();
             }
+
         }
 
         return back()->with('mensaje', 'Estado actualizado a ' . $status->status);
+    }
+
+    public function updateCarrito(Request $request, $id)
+    {
+        $accion = $request->accion;
+
+        $carrito = session('carrito', null);
+
+        if ($carrito && sizeOf($carrito) > 0) {
+            foreach ($carrito as $item => $value) {
+                if ($value["id"] == $id) {
+
+                    if ($accion == 'agregado') {
+                        $carrito[$item]["quantity"]++;
+                    } else if ($carrito[$item]["quantity"] > 0) {
+                        $carrito[$item]["quantity"]--;
+                    }
+
+                    session(['carrito' => $carrito]);
+                    return back()->with('mensaje', 'Articulo ' . $accion . ': ' . $value["detail"]);
+                }
+            }
+            return back()->with('mensaje', 'error: no se encuentra el item');
+        } else {
+            return back()->with('mensaje', 'error: no existe carrito');
+        }
     }
 
     /**
