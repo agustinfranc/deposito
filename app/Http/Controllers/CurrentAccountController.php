@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Order;
-use App\OrderDetail;
-use App\OrderStatus;
 use App\Http\Repositories\OrderRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +21,11 @@ class CurrentAccountController extends Controller
      */
     public function index(OrderRepository $repository)
     {
-        $orders = $repository->getOrders(request()->all());
+        abort(404);
+
+        $orders = $repository->getCurrentAccount(request()->all());
+
+        logger($orders);
 
         return view('current-account.index', compact('orders'));
     }

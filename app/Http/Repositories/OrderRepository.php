@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class OrderRepository
 {
-    public function getOrders($request) {
+    public function getOrders($request, $grouped = false) {
         return Order::join('users', 'orders.user_id', '=', 'users.id')
         ->join('order_pay_forms', 'orders.pay_form_id', '=', 'order_pay_forms.id')
         ->select(
@@ -24,6 +24,9 @@ class OrderRepository
         )
         ->when(!auth()->user()->administrator, function ($query) use ($request) {
             return $query->where('user_id', auth()->user()->id);
+        })
+        ->when($grouped, function ($query) {
+            return $query->groupBy('user_id');
         })
         ->get();
     }
@@ -53,5 +56,20 @@ class OrderRepository
 
         return ['order' => $order, 'detail' => $detail];
 
+    }
+
+    public function getCurrentAccount($request) {
+        return Order::join('users', 'orders.user_id', '=', 'users.id')
+        ->select(
+            'orders.user_id'
+            , 'users.email'
+            , 'users.name as user_name'
+            , DB::raw('(SELECT SUM(price) FROM order_details _order_details WHERE _order_details.order_id = orders.id) total')
+        )
+        ->when(!auth()->user()->administrator, function ($query) use ($request) {
+            return $query->where('user_id', auth()->user()->id);
+        })
+        ->groupBy('user_id')
+        ->get();
     }
 }

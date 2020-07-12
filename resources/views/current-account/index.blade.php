@@ -15,6 +15,31 @@
 
                 <div class="card-body">
 
+                    <table class="table my-3">
+                        <thead>
+                            <tr>
+                            @if (auth()->user()->administrator)
+                                <th scope="col">Cliente</th>
+                            @endif
+                            {{-- <th scope="col">Total</th> --}}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($orders as $item)
+                                @if ($item->status_id < 6)
+                                    <tr>
+                                        @if (auth()->user()->administrator)
+                                            <td><span>{{ $item->email }}</span></td>
+                                        @endif
+                                        {{-- <td><span>${{ $item->total }}</span></td> --}}
+
+                                    </tr>
+                                @endif
+                            @endforeach
+
+                        </tbody>
+                    </table>
+
                 </div>
 
             </div>
