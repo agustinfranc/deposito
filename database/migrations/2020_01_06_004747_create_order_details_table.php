@@ -20,8 +20,8 @@ class CreateOrderDetailsTable extends Migration
             $table->string('detail');
             $table->mediumInteger('quantity');
             $table->decimal('price', 8, 2);
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('order_id')
                 ->references('id')->on('orders')

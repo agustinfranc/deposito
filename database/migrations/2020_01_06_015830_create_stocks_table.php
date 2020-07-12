@@ -19,11 +19,11 @@ class CreateStocksTable extends Migration
             $table->string('subrubro')->nullable();
             $table->integer('code')->unique();
             $table->string('detail')->unique();
-            $table->mediumInteger('quantity')->default(0);
+            $table->unsignedMediumInteger('quantity')->default(0);
             $table->decimal('price', 8, 2);
             $table->unsignedInteger('creator_id');
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('creator_id')
                 ->references('id')->on('users')

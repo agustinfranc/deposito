@@ -18,8 +18,8 @@ class CreateOrdersTable extends Migration
             $table->unsignedInteger('user_id');
             $table->string('note')->nullable();
             $table->unsignedTinyInteger('status_id')->default(1);
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('status_id')
                 ->references('id')->on('order_statuses')
