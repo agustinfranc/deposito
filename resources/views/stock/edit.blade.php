@@ -12,7 +12,7 @@
     <div class="row justify-content-center">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Nuevo Producto</div>
+                <div class="card-header">Editar Producto</div>
 
                 <div class="card-body">
 
@@ -45,7 +45,7 @@
 
             </div>
         </div>
-        <div class="d-flex flex-row-reverse">
+        <div class="d-flex flex-row-reverse mt-3">
             <a href="{{ route('stock.index') }}" class="btn btn-outline-primary">Volver</a>
         </div>
     </div>

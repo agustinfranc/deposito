@@ -40,7 +40,7 @@
 
             </div>
         </div>
-        <div class="d-flex flex-row-reverse">
+        <div class="d-flex flex-row-reverse mt-3">
             <a href="{{ route('stock.index') }}" class="btn btn-outline-primary">Volver</a>
         </div>
     </div>
