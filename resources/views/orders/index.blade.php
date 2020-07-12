@@ -72,6 +72,7 @@
                                         <th scope="col">Cliente</th>
                                     @endif
                                     <th scope="col">Fecha</th>
+                                    <th scope="col">Forma Pago</th>
                                     <th scope="col">Total</th>
                                     <th scope="col">Acciones</th>
                                     </tr>
@@ -85,6 +86,7 @@
                                                     <td><span>{{ $item->email }}</span></td>
                                                 @endif
                                                 <td><span>{{ $item->created_at }}</span></td>
+                                                <td><span>{{ $item->pay_form_name }}</span></td>
                                                 <td><span>${{ $item->total }}</span></td>
                                                 <td>
                                                     <span>

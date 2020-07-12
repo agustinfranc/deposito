@@ -9,6 +9,7 @@ class OrderRepository
 {
     public function getOrders($request) {
         return Order::join('users', 'orders.user_id', '=', 'users.id')
+        ->join('order_pay_forms', 'orders.pay_form_id', '=', 'order_pay_forms.id')
         ->select(
             'orders.id'
             , 'orders.user_id'
@@ -17,7 +18,8 @@ class OrderRepository
             , 'orders.created_at'
             , 'orders.updated_at'
             , 'users.email'
-            , 'users.name'
+            , 'users.name as user_name'
+            , 'order_pay_forms.name as pay_form_name'
             , DB::raw('(SELECT SUM(price) FROM order_details _order_details WHERE _order_details.order_id = orders.id) total')
         )
         ->when(!auth()->user()->administrator, function ($query) use ($request) {

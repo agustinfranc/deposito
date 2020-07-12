@@ -7,6 +7,7 @@ use App\OrderDetail;
 use App\OrderStatus;
 use App\Http\Repositories\OrderRepository;
 use App\Mail\SolicitudPedidoMail;
+use App\OrderPayForm;
 use App\Stock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -41,23 +42,24 @@ class OrderController extends Controller
      */
     public function create()
     {
-        $cont = 0;
         $carrito = session('carrito', null);
-        if ($carrito) {
-            $total = 0;
-            foreach ($carrito as $item) {
-                if ($item["quantity"] > 0) {
-                    $cont++;
-                    $total += $item["price"] * $item["quantity"];
-                }
+
+        if (!$carrito) return view('orders.create')->with('mensaje', 'error: no existe carrito');
+
+        $pay_forms = OrderPayForm::all();
+
+        $cont = 0;
+        $total = 0;
+        foreach ($carrito as $item) {
+            if ($item["quantity"] > 0) {
+                $cont++;
+                $total += $item["price"] * $item["quantity"];
             }
-            if ($cont > 0)
-                return view('orders.create', compact('carrito', 'total'));
-            else
-                return view('orders.create')->with('mensaje', 'error: no existen items en carrito');
-        } else {
-            return view('orders.create')->with('mensaje', 'error: no existe carrito');
         }
+        if ($cont > 0)
+            return view('orders.create', compact('carrito', 'total', 'pay_forms'));
+        else
+            return view('orders.create')->with('mensaje', 'error: no existen items en carrito');
     }
 
     /**
@@ -72,38 +74,38 @@ class OrderController extends Controller
 
         $carrito = session('carrito', null);
 
-        if ($carrito)
-        {
-            $order->user_id = auth()->user()->id;
-            $order->note = $request->nota;
-            $order->save();
-            $id = $order->id;
+        if (!$carrito) return back()->with('mensaje', 'Error, no existe carrito');
 
-            foreach ($carrito as $item) {
-                if ($item["quantity"] > 0) {
-                    $price = $item["price"] * $item["quantity"];
+        $pay_form = OrderPayForm::where('name', $request->pay_form_name)->first();
 
-                    $detalle_pedido = new OrderDetail();
-                    $detalle_pedido->order_id = $id;
-                    $detalle_pedido->code = $item["code"];
-                    $detalle_pedido->detail = $item["detail"];
-                    $detalle_pedido->quantity = $item["quantity"];
-                    $detalle_pedido->price = $price;
+        $order->user_id = auth()->user()->id;
+        $order->note = $request->note;
+        $order->pay_form_id = $pay_form->id;
+        $order->save();
+        $id = $order->id;
 
-                    $detalle_pedido->save();
-                }
+        foreach ($carrito as $item) {
+            if ($item["quantity"] > 0) {
+                $price = $item["price"] * $item["quantity"];
+
+                $detalle_pedido = new OrderDetail();
+                $detalle_pedido->order_id = $id;
+                $detalle_pedido->code = $item["code"];
+                $detalle_pedido->detail = $item["detail"];
+                $detalle_pedido->quantity = $item["quantity"];
+                $detalle_pedido->price = $price;
+
+                $detalle_pedido->save();
             }
-
-            $request->session()->forget('carrito');
-
-            // Envio email
-            /* if (env("APP_ENV", "local") == 'local')
-                Mail::to(auth()->user()->email)->send(new SolicitudPedidoMail()); */
-
         }
 
-        return back()->with('mensaje', 'Pedido creado');
+        $request->session()->forget('carrito');
 
+        // Envio email
+        /* if (env("APP_ENV", "local") == 'local')
+            Mail::to(auth()->user()->email)->send(new SolicitudPedidoMail()); */
+
+        return back()->with('mensaje', 'Pedido creado');
     }
 
     /**

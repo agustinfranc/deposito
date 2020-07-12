@@ -67,19 +67,17 @@
                                 <input type="hidden" name="total" value="{{ $total }}">
 
                                 <div class="form-group">
-                                    <label for="formapago">Forma de pago</label>
-                                    <select class="form-control" name="formapago" id="formapago">
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
+                                    <label for="pay_form_name">Forma de pago</label>
+                                    <select class="form-control" name="pay_form_name">
+                                        @foreach($pay_forms as $item)
+                                            <option>{{ $item->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="nota">¿Algo para aclarar?</label>
-                                    <input type="text" class="form-control" name="nota" id="nota" placeholder="Nota">
+                                    <label for="note">¿Algo para aclarar?</label>
+                                    <input type="text" class="form-control" name="note" id="note" placeholder="Nota">
                                 </div>
 
                                 <div class="form-group my-5">
