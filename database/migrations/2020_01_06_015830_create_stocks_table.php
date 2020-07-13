@@ -18,7 +18,7 @@ class CreateStocksTable extends Migration
             $table->string('rubro');
             $table->string('subrubro')->nullable();
             $table->integer('code')->unique();
-            $table->string('detail')->unique();
+            $table->string('detail');
             $table->unsignedMediumInteger('quantity')->default(0);
             $table->decimal('price', 8, 2);
             $table->unsignedInteger('creator_id');
