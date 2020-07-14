@@ -21,3 +21,7 @@
     top: -0.08rem;
     font-size: 1.3rem;
 }
+
+.card .card-body .badge {
+    font-size: 90%;
+}

@@ -13,6 +13,7 @@
                     <span class="badge badge-secondary">${{$order->total}}</span>
                     <span class="badge badge-secondary">{{$order->created_at}}</span>
                     <span class="badge badge-success">{{$order->status}}</span>
+                    <span class="badge badge-secondary">{{$order->note}}</span>
 
                     <div class="tab-content">
 
@@ -66,7 +67,7 @@
 
                                         @if (auth()->user()->administrator)
                                             <td>
-                                                <div>
+                                                {{-- <div>
                                                     <a href="{{ route('orders.edit', $item->id) }}" class="btn text-warning disabled"><i class="material-icons">edit</i></a>
 
                                                     <form action="{{ route('orders.destroy', $item->id) }}" class="d-inline" method="POST">
@@ -74,7 +75,7 @@
                                                         @csrf
                                                         <button class="btn text-danger disabled" type="submit"><i class="material-icons">delete</i></button>
                                                     </form>
-                                                </div>
+                                                </div> --}}
                                             </td>
                                         @endif
                                     </tr>
