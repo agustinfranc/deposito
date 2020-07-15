@@ -21,20 +21,24 @@
                             @if (auth()->user()->administrator)
                                 <th scope="col">Cliente</th>
                             @endif
-                            {{-- <th scope="col">Total</th> --}}
+                            <th scope="col">Pedidos</th>
+                            <th scope="col">Pedidos sin cobrar</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Total sin cobrar</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($orders as $item)
-                                @if ($item->status_id < 6)
-                                    <tr>
-                                        @if (auth()->user()->administrator)
-                                            <td><span>{{ $item->email }}</span></td>
-                                        @endif
-                                        {{-- <td><span>${{ $item->total }}</span></td> --}}
+                                <tr>
+                                    @if (auth()->user()->administrator)
+                                        <td><span>{{ $item->email }}</span></td>
+                                    @endif
+                                    <td><span>{{ $item->order_count }}</span></td>
+                                    <td><span>{{ $item->pending_order_count }}</span></td>
+                                    <td><span>${{ $item->order_total }}</span></td>
+                                    <td><span>${{ $item->pending_order_total }}</span></td>
 
-                                    </tr>
-                                @endif
+                                </tr>
                             @endforeach
 
                         </tbody>
