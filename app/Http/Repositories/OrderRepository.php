@@ -80,7 +80,7 @@ class OrderRepository
             )
             ->where('users.administrator', '!=', 1)
             ->when(!auth()->user()->administrator, function ($query) use ($request) {
-                return $query->where('user_id', auth()->user()->id);
+                return $query->where('users.id', auth()->user()->id);
             })
             ->get();
 

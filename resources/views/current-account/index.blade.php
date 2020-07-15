@@ -20,11 +20,16 @@
                             <tr>
                             @if (auth()->user()->administrator)
                                 <th scope="col">Cliente</th>
+                                <th scope="col">Pedidos</th>
+                                <th scope="col">Pedidos sin cobrar</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Total sin cobrar</th>
+                            @else
+                                <th scope="col">Pedidos</th>
+                                <th scope="col">Pedidos sin pagar</th>
+                                <th scope="col">Total</th>
+                                <th scope="col">Total sin pagar</th>
                             @endif
-                            <th scope="col">Pedidos</th>
-                            <th scope="col">Pedidos sin cobrar</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Total sin cobrar</th>
                             </tr>
                         </thead>
                         <tbody>
