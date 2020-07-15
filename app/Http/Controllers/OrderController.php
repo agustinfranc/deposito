@@ -81,6 +81,7 @@ class OrderController extends Controller
         $order->user_id = auth()->user()->id;
         $order->note = $request->note;
         $order->pay_form_id = $pay_form->id;
+        $order->shipping_date = $request->shipping_date;
         $order->save();
         $id = $order->id;
 

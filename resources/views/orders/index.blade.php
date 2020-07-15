@@ -35,35 +35,6 @@
                                 @endif
                             </div>
 
-                            {{-- <ul id="lista-productos" class="list-group mt-3">
-                                @foreach($orders as $item)
-                                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                                        <strong>#{{ $item->id }}</strong>
-                                        <span>{{ $item->created_at }}</span>
-                                        <span>${{ $item->total }}</span>
-
-                                        <div class="float-right">
-                                            <a href="{{ route('orders.show', $item->id) }}" class="mr-2"><i class="material-icons">more</i></a>
-                                        </div>
-
-                                        @if (auth()->user()->administrator)
-                                            <div class="float-right">
-
-                                                <a href="{{ route('orders.edit', $item->id) }}" class="btn btn-warning btn-sm mr-2"><i class="material-icons">edit</i></a>
-
-                                                <form action="{{ route('orders.destroy', $item->id) }}" class="d-inline" method="POST">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                    <button class="btn btn-danger btn-sm" type="submit"><i class="material-icons">delete</i></button>
-                                                </form>
-
-                                            </div>
-                                        @endif
-
-                                    </li>
-                                @endforeach
-                            </ul> --}}
-
                             <table class="table my-3">
                                 <thead>
                                     <tr>
@@ -74,6 +45,7 @@
                                     <th scope="col">Fecha</th>
                                     <th scope="col">Forma Pago</th>
                                     <th scope="col">Total</th>
+                                    <th scope="col">Creado</th>
                                     <th scope="col">Acciones</th>
                                     </tr>
                                 </thead>
@@ -85,14 +57,15 @@
                                                 @if (auth()->user()->administrator)
                                                     <td><span>{{ $item->email }}</span></td>
                                                 @endif
-                                                <td><span>{{ $item->created_at }}</span></td>
+                                                <td><span>{{ $item->shipping_date }}</span></td>
                                                 <td><span>{{ $item->pay_form_name }}</span></td>
                                                 <td><span>${{ $item->total }}</span></td>
+                                                <td><span>{{ $item->created_at }}</span></td>
                                                 <td>
                                                     <span>
-                                                        @if (auth()->user()->administrator && $item->status_id < 3)
+                                                        {{-- @if (auth()->user()->administrator && $item->status_id < 3)
                                                             <a href="{{ route('orders.edit', $item->id) }}" class="btn disabled mr-2"><i class="material-icons">edit</i></a>
-                                                        @endif
+                                                        @endif --}}
 
                                                         <div style="display: inline-block;" class="dropdown">
                                                             <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                                                </button>

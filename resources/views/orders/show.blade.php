@@ -10,6 +10,7 @@
                 <div class="card-body">
                     <h2>Pedido #{{$order->id}}</h2>
                     <span class="badge badge-primary">{{$order->email}}</span>
+                    <span class="badge badge-primary">{{$order->shipping_date}}</span>
                     <span class="badge badge-secondary">${{$order->total}}</span>
                     <span class="badge badge-secondary">{{$order->created_at}}</span>
                     <span class="badge badge-success">{{$order->status}}</span>

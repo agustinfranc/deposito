@@ -67,6 +67,11 @@
                                 <input type="hidden" name="total" value="{{ $total }}">
 
                                 <div class="form-group">
+                                    <label for="shipping_date">Entrega</label>
+                                    <input type="date" class="form-control" name="shipping_date">
+                                </div>
+
+                                <div class="form-group">
                                     <label for="pay_form_name">Forma de pago</label>
                                     <select class="form-control" name="pay_form_name">
                                         @foreach($pay_forms as $item)
@@ -77,7 +82,7 @@
 
                                 <div class="form-group">
                                     <label for="note">¿Algo para aclarar?</label>
-                                    <input type="text" class="form-control" name="note" id="note" placeholder="Nota">
+                                    <input type="text" class="form-control" name="note" placeholder="Nota">
                                 </div>
 
                                 <div class="form-group my-5">
