@@ -10,7 +10,14 @@
     @endif
 
     <div class="row justify-content-center">
-        <div class="col-md-12">
+
+        <div class="col">
+            <div class="card p-3">
+                Filtros
+            </div>
+        </div>
+
+        <div class="col-md-12 mt-3">
             <div class="card">
 
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -20,6 +27,8 @@
                     <li class="nav-item">
                         <a class="nav-link" id="finalizados-tab" data-toggle="tab" href="#finalizados" role="tab" aria-controls="finalizados" aria-selected="false">Pedidos Finalizados</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="cancelados-tab" data-toggle="tab" href="#cancelados" role="tab" aria-controls="cancelados" aria-selected="false">Pedidos Cancelados</a>
                     </li>
                 </ul>
 
@@ -116,7 +125,7 @@
 
                         </div>
 
-                        <div class="tab-pane fade active" id="finalizados" role="tabpanel" aria-labelledby="finalizados-tab">
+                        <div class="tab-pane fade" id="finalizados" role="tabpanel" aria-labelledby="finalizados-tab">
 
                             <div class="d-flex align-items-end flex-column bd-highlight mb-3">
                                 @if (!auth()->user()->administrator)
@@ -137,6 +146,56 @@
                                 <tbody>
                                     @foreach($orders as $item)
                                         @if ($item->status_id == 6)
+                                            <tr>
+                                                <th scope="row"><span><a href="{{ route('orders.show', $item->id) }}">#{{ $item->id }}</a></span></th>
+                                                <td><span>{{ $item->email }}</span></td>
+                                                <td><span>{{ $item->created_at }}</span></td>
+                                                <td><span>${{ $item->total }}</span></td>
+                                                <td>
+                                                    <span>
+
+                                                        <div style="display: inline-block;" class="dropdown">
+                                                            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">                                                </button>
+                                                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+                                                                <a class="dropdown-item" href="{{ route('orders.show', $item->id) }}"><i class="material-icons">remove_red_eye</i>Ver detalle</a>
+
+                                                            </div>
+                                                        </div>
+                                                    </span>
+
+                                                </td>
+
+                                            </tr>
+                                        @endif
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <div class="tab-pane fade" id="cancelados" role="tabpanel" aria-labelledby="cancelados-tab">
+
+                            <div class="d-flex align-items-end flex-column bd-highlight mb-3">
+                                @if (!auth()->user()->administrator)
+                                    <a name="todos" id="todos" class="btn btn-primary mr-1" href="{{ route('stock.index') }}" role="button">Nuevo</a>
+                                @endif
+                            </div>
+
+                            <table class="table my-3">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">Pedido - Id</th>
+                                    <th scope="col">Cliente</th>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($orders as $item)
+                                        @if ($item->status_id == 7)
                                             <tr>
                                                 <th scope="row"><span><a href="{{ route('orders.show', $item->id) }}">#{{ $item->id }}</a></span></th>
                                                 <td><span>{{ $item->email }}</span></td>
