@@ -39,7 +39,8 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        // Comento la linea 43 porque solo el usuario Admin puede registrar usuarios
+        //$this->middleware('guest');
     }
 
     /**
