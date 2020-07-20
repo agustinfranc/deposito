@@ -25,3 +25,10 @@
 .card .card-body .badge {
     font-size: 90%;
 }
+
+.nav-tabs .nav-link.active {
+    border-color: #3f4047;
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+}

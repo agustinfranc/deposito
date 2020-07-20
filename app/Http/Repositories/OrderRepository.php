@@ -9,6 +9,20 @@ use Illuminate\Support\Facades\DB;
 class OrderRepository
 {
     public function getOrders($request, $grouped = false) {
+
+        $period = isset($request['period']) ? $request['period'] : 'Ultima semana';
+
+        $periods = [
+            'Ultima semana' => ['days' => 7, 'operator' => '>='],
+            'Ultimo mes' => ['days' => 30, 'operator' => '>='],
+            'Ultimo trimestre' => ['days' => 90, 'operator' => '>='],
+            'Ultimo semestre' => ['days' => 180, 'operator' => '>='],
+            'Ultimo año' => ['days' => 360, 'operator' => '>='],
+            'Más de un año' => ['days' => 360, 'operator' => '<'],
+        ];
+
+        if(isset($periods[$period])) $createdAtConditional = 'DATE(orders.created_at) ' . $periods[$period]['operator'] . ' DATE_SUB(NOW(), INTERVAL ' . $periods[$period]['days'] . ' DAY)';
+
         return Order::join('users', 'orders.user_id', '=', 'users.id')
             ->join('order_pay_forms', 'orders.pay_form_id', '=', 'order_pay_forms.id')
             ->select(
@@ -26,6 +40,12 @@ class OrderRepository
             )
             ->when(!auth()->user()->administrator, function ($query) use ($request) {
                 return $query->where('user_id', auth()->user()->id);
+            })
+            ->when(auth()->user()->administrator && $request['user_id'], function ($query) use ($request) {
+                return $query->where('user_id', $request['user_id']);
+            })
+            ->when($request['period'], function ($query) use ($request, $createdAtConditional) {
+                return $query->whereRaw($createdAtConditional);
             })
             ->when($grouped, function ($query) {
                 return $query->groupBy('user_id');
@@ -62,21 +82,34 @@ class OrderRepository
     }
 
     public function getCurrentAccount($request) {
+        $period = isset($request['period']) ? $request['period'] : 'Ultima semana';
+
+        $periods = [
+            'Ultima semana' => ['days' => 7, 'operator' => '>='],
+            'Ultimo mes' => ['days' => 30, 'operator' => '>='],
+            'Ultimo trimestre' => ['days' => 90, 'operator' => '>='],
+            'Ultimo semestre' => ['days' => 180, 'operator' => '>='],
+            'Ultimo año' => ['days' => 360, 'operator' => '>='],
+            'Más de un año' => ['days' => 360, 'operator' => '<'],
+        ];
+
+        if(isset($periods[$period])) $createdAtConditional = 'AND DATE(_orders.created_at) ' . $periods[$period]['operator'] . ' DATE_SUB(NOW(), INTERVAL ' . $periods[$period]['days'] . ' DAY)';
+
         return User::
             select(
                 'users.id'
                 , 'users.email'
                 , 'users.name as user_name'
-                , DB::raw('(SELECT COUNT(id) FROM orders _orders WHERE _orders.user_id = users.id) order_count')
-                , DB::raw('(SELECT COUNT(id) FROM orders _orders WHERE _orders.user_id = users.id AND _orders.status_id < 5) pending_order_count')
-                , DB::raw('(SELECT
+                , DB::raw("(SELECT COUNT(id) FROM orders _orders WHERE _orders.user_id = users.id $createdAtConditional) order_count")
+                , DB::raw("(SELECT COUNT(id) FROM orders _orders WHERE _orders.user_id = users.id AND _orders.status_id < 5 $createdAtConditional) pending_order_count")
+                , DB::raw("(SELECT
                     SUM((SELECT SUM(price) FROM order_details = _order_details WHERE _order_details.order_id = _orders.id)) total
                     FROM orders _orders
-                    WHERE _orders.user_id = users.id) order_total')
-                , DB::raw('(SELECT
+                    WHERE _orders.user_id = users.id $createdAtConditional) order_total")
+                , DB::raw("(SELECT
                     SUM((SELECT SUM(price) FROM order_details = _order_details WHERE _order_details.order_id = _orders.id)) total
                     FROM orders _orders
-                    WHERE _orders.user_id = users.id AND _orders.status_id < 5) pending_order_total')
+                    WHERE _orders.user_id = users.id AND _orders.status_id < 5 $createdAtConditional) pending_order_total")
             )
             ->where('users.administrator', '!=', 1)
             ->when(!auth()->user()->administrator, function ($query) use ($request) {

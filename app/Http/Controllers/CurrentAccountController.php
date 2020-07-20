@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Order;
 use App\Http\Repositories\OrderRepository;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -19,13 +20,15 @@ class CurrentAccountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(OrderRepository $repository)
+    public function index(Request $request, OrderRepository $repository)
     {
         $orders = $repository->getCurrentAccount(request()->all());
 
-        logger($orders);
+        $users = User::all();
 
-        return view('current-account.index', compact('orders'));
+        $user = ($request['user_id']) ? User::find($request['user_id']) : null;
+
+        return view('current-account.index', compact('orders', 'request', 'users', 'user'));
     }
 
     /**

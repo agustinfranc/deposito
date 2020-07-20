@@ -9,6 +9,7 @@ use App\Http\Repositories\OrderRepository;
 use App\Mail\SolicitudPedidoMail;
 use App\OrderPayForm;
 use App\Stock;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -26,13 +27,15 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(OrderRepository $repository)
+    public function index(Request $request, OrderRepository $repository)
     {
-        $orders = $repository->getOrders(request()->all());
+        $orders = $repository->getOrders($request);
 
-        //logger($orders);
+        $users = User::all();
 
-        return view('orders.index', compact('orders'));
+        $user = ($request['user_id']) ? User::find($request['user_id']) : null;
+
+        return view('orders.index', compact('orders', 'users', 'request', 'user'));
     }
 
     /**
