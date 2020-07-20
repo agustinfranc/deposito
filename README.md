@@ -17,3 +17,6 @@
 
 #### Terminal Cpanel Composer
 /opt/cpanel/ea-php72/root/usr/bin/php artisan list
+
+#### Ver Rutas
+php artisan route:list
