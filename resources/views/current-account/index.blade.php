@@ -41,20 +41,22 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="email-form">Usuario</label>
-                                    <select class="form-control" id="email-form" name="user_id">
-                                        @if ($request['user_id'] && $user)
-                                            <option value="{{ $request['user_id'] ?? '' }}">{{ $user['email'] ?? 'Todos' }}</option>
-                                        @endif
-                                        <option value="">Todos</option>
-                                        @foreach ($users as $item)
-                                            <option value="{{ $item->id }}">{{ $item->email }}</option>
-                                        @endforeach
-                                    </select>
+                            @if (Auth::user()->administrator)
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="email-form">Usuario</label>
+                                        <select class="form-control" id="email-form" name="user_id">
+                                            @if ($request['user_id'] && $user)
+                                                <option value="{{ $request['user_id'] ?? '' }}">{{ $user['email'] ?? 'Todos' }}</option>
+                                            @endif
+                                            <option value="">Todos</option>
+                                            @foreach ($users as $item)
+                                                <option value="{{ $item->id }}">{{ $item->email }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                            </div>
+                            @endif
 
                             <div class="col-md-12">
                                 <div class="form-group float-right">
@@ -88,7 +90,7 @@
                                     @if (auth()->user()->administrator)
                                         <td><span>{{ $item->email }}</span></td>
                                     @endif
-                                    <td><span>{{ $item->order_count }}</span></td>
+                                    <td><span><a href="{{ route('orders.index', 'user_id=' . $item->id) }}">{{ $item->order_count }}</a></span></td>
                                     <td><span>{{ $item->pending_order_count }}</span></td>
                                     <td><span>${{ $item->order_total }}</span></td>
                                     <td><span>${{ $item->pending_order_total }}</span></td>
