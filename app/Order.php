@@ -9,6 +9,10 @@ class Order extends Model
 {
     use SoftDeletes;
 
+    /* -------------------- */
+	/* Relationships ------ */
+	/* -------------------- */
+
     /**
      * Get the details for the order.
      */
@@ -23,5 +27,21 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
+    }
+
+    /**
+     * Get the pay form record associated with the order.
+     */
+    public function payForm()
+    {
+        return $this->belongsTo('App\OrderPayForm');
+    }
+
+    /**
+     * Get the status record associated with the order.
+     */
+    public function status()
+    {
+        return $this->belongsTo('App\OrderStatus');
     }
 }

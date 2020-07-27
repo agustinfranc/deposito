@@ -42,6 +42,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /* -------------------- */
+	/* Relationships ------ */
+	/* -------------------- */
+
     public function orders()
     {
         return $this->hasMany('App\Order');
