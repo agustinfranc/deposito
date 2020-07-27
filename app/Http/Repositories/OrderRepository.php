@@ -70,7 +70,11 @@ class OrderRepository
                 , 'orders.shipping_date'
                 , 'orders.created_at'
                 , 'orders.updated_at'
+                , 'users.name'
                 , 'users.email'
+                , 'users.cuit'
+                , 'users.razon'
+                , 'users.address'
                 , 'order_statuses.status'
                 , DB::raw('(SELECT SUM(price) FROM order_details _order_details WHERE _order_details.order_id = orders.id) total')
             )

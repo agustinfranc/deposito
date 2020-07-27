@@ -15,6 +15,7 @@
     return view('home');
 })->middleware('auth'); */
 
+use App\Mail\OrderConfirmed;
 use App\Mail\WelcomeMail;
 
 Auth::routes(['verify' => true]);
@@ -30,6 +31,8 @@ Route::resources([
 
 Route::get('orders/{id}/state/{state_id}', 'OrderController@updateState')->name('orders.updateState');
 
+Route::get('orders/remito/{order}', 'OrderController@getRemito')->name('orders.remito');
+
 Route::put('carrito/{id}', 'OrderController@updateCarrito')->name('orders.updateCarrito');
 
 Route::get('stock/rubro/{rubro}', 'StockController@getStockPorRubro');
@@ -38,4 +41,8 @@ Route::get('exportar/stock', 'StockController@export');
 
 Route::get('email/welcome', function() {
     return new WelcomeMail();
+});
+
+Route::get('email/orderConfirmed', function() {
+    return new OrderConfirmed();
 });

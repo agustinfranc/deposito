@@ -6,6 +6,7 @@ use App\Order;
 use App\OrderDetail;
 use App\OrderStatus;
 use App\Http\Repositories\OrderRepository;
+use App\Mail\OrderConfirmed;
 use App\Mail\SolicitudPedidoMail;
 use App\OrderPayForm;
 use App\Stock;
@@ -106,8 +107,7 @@ class OrderController extends Controller
         $request->session()->forget('carrito');
 
         // Envio email
-        /* if (env("APP_ENV", "local") == 'local')
-            Mail::to(auth()->user()->email)->send(new SolicitudPedidoMail()); */
+        Mail::to(auth()->user()->email)->send(new SolicitudPedidoMail());
 
         return back()->with('mensaje', 'Pedido creado');
     }
@@ -152,7 +152,7 @@ class OrderController extends Controller
         //
     }
 
-    public function updateState(Request $request, $id = null, $status_id = null)
+    public function updateState(Request $request, OrderRepository $repository, $id = null, $status_id = null)
     {
         if (!$id || !$status_id) return;
 
@@ -171,7 +171,9 @@ class OrderController extends Controller
                 $stock->quantity -= $detail['quantity'];
                 $stock->save();
             }
-
+        }
+        else if ($status_id == 2) {
+            Mail::to($order->user->email)->send(new OrderConfirmed(Order::findOrFail($id)));
         }
 
         return back()->with('mensaje', 'Estado actualizado a ' . $status->status);
@@ -212,5 +214,16 @@ class OrderController extends Controller
     public function destroy(Order $orders)
     {
         //
+    }
+
+    public function getRemito(Order $order, OrderRepository $repository) {
+        $data = $repository->getOrder(request()->all(), $order);
+
+        logger($data);
+
+        $order = $data['order'];
+        $detail = $data['detail'];
+
+        return view('orders.remito', compact('order', 'detail'));
     }
 }

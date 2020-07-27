@@ -106,7 +106,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach($orders as $item)
-                                        @if ($item->status_id < 3)
+                                        @if ($item->status_id == 1)
                                             <tr>
                                                 <th scope="row"><span><a href="{{ route('orders.show', $item->id) }}">#{{ $item->id }}</a></span></th>
                                                 @if (auth()->user()->administrator)
@@ -129,21 +129,8 @@
                                                                 <a class="dropdown-item" href="{{ route('orders.show', $item->id) }}"><i class="material-icons">remove_red_eye</i>Ver detalle</a>
 
                                                                 @if (auth()->user()->administrator)
-                                                                    @if ($item->status_id == 1)
-                                                                        <a class="dropdown-item" href="orders/{{$item->id}}/state/2" ><i class="material-icons">check</i>Aprobar pedido</a>
-                                                                        <a class="dropdown-item" href="orders/{{$item->id}}/state/7" ><i class="material-icons">cancel</i>Cancelar pedido</a>
-                                                                    @elseif ($item->status_id == 2)
-                                                                        <a class="dropdown-item" href="orders/{{$item->id}}/state/3" ><i class="material-icons">receipt</i>Facturar pedido</a>
-                                                                        <a class="dropdown-item" href="orders/{{$item->id}}/state/7" ><i class="material-icons">cancel</i>Cancelar pedido</a>
-                                                                    @elseif ($item->status_id == 3)
-                                                                        <a class="dropdown-item" href="orders/{{$item->id}}/state/4" ><i class="material-icons">receipt</i>Marcar pedido como cobrado</a>
-                                                                    @elseif ($item->status_id == 4)
-                                                                        <a class="dropdown-item" href="orders/{{$item->id}}/state/5" ><i class="material-icons">receipt</i>Enviar pedido</a>
-                                                                    @elseif ($item->status_id == 5)
-                                                                        <a class="dropdown-item" href="orders/{{$item->id}}/state/6" ><i class="material-icons">receipt</i>Marcar pedido como recibido</a>
-                                                                    @else
-
-                                                                    @endif
+                                                                    <a class="dropdown-item" href="orders/{{$item->id}}/state/2" ><i class="material-icons">check</i>Aprobar pedido</a>
+                                                                    <a class="dropdown-item" href="orders/{{$item->id}}/state/7" ><i class="material-icons">cancel</i>Cancelar pedido</a>
                                                                 @elseif ($item->status_id == 1)
                                                                     <a class="dropdown-item" href="orders/{{$item->id}}/state/7" ><i class="material-icons">cancel</i>Cancelar pedido</a>
                                                                 @endif
@@ -195,7 +182,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach($orders as $item)
-                                        @if ($item->status_id < 6 && $item->status_id > 2)
+                                        @if ($item->status_id < 6 && $item->status_id > 1)
                                             <tr>
                                                 <th scope="row"><span><a href="{{ route('orders.show', $item->id) }}">#{{ $item->id }}</a></span></th>
                                                 @if (auth()->user()->administrator)
@@ -216,12 +203,10 @@
                                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                                                 <a class="dropdown-item" href="{{ route('orders.show', $item->id) }}"><i class="material-icons">remove_red_eye</i>Ver detalle</a>
+                                                                <a class="dropdown-item" href="orders/remito/{{$item->id}}" target="_blank" ><i class="material-icons">receipt</i>Ver remito</a>
 
                                                                 @if (auth()->user()->administrator)
-                                                                    @if ($item->status_id == 1)
-                                                                        <a class="dropdown-item" href="orders/{{$item->id}}/state/2" ><i class="material-icons">check</i>Aprobar pedido</a>
-                                                                        <a class="dropdown-item" href="orders/{{$item->id}}/state/7" ><i class="material-icons">cancel</i>Cancelar pedido</a>
-                                                                    @elseif ($item->status_id == 2)
+                                                                    @if ($item->status_id == 2)
                                                                         <a class="dropdown-item" href="orders/{{$item->id}}/state/3" ><i class="material-icons">receipt</i>Facturar pedido</a>
                                                                         <a class="dropdown-item" href="orders/{{$item->id}}/state/7" ><i class="material-icons">cancel</i>Cancelar pedido</a>
                                                                     @elseif ($item->status_id == 3)
@@ -294,6 +279,7 @@
                                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                                                 <a class="dropdown-item" href="{{ route('orders.show', $item->id) }}"><i class="material-icons">remove_red_eye</i>Ver detalle</a>
+                                                                <a class="dropdown-item" href="orders/remito/{{$item->id}}" target="_blank" ><i class="material-icons">receipt</i>Ver remito</a>
 
                                                             </div>
                                                         </div>
