@@ -132,6 +132,7 @@
 
                                                                 @if (auth()->user()->administrator)
                                                                     <a class="dropdown-item" href="orders/{{$item->id}}/state/2" ><i class="material-icons">check</i>Aprobar pedido</a>
+                                                                    <a class="dropdown-item" href="{{ route('orders.edit', $item->id) }}" class="btn mr-2"><i class="material-icons">edit</i>Editar pedido</a>
                                                                     <a class="dropdown-item" href="orders/{{$item->id}}/state/7" ><i class="material-icons">cancel</i>Cancelar pedido</a>
                                                                 @elseif ($item->status_id == 1)
                                                                     <a class="dropdown-item" href="orders/{{$item->id}}/state/7" ><i class="material-icons">cancel</i>Cancelar pedido</a>
@@ -205,7 +206,7 @@
                                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                                                 <a class="dropdown-item" href="{{ route('orders.show', $item->id) }}"><i class="material-icons">remove_red_eye</i>Ver detalle</a>
-                                                                <a class="dropdown-item" href="orders/remito/{{$item->id}}" target="_blank" ><i class="material-icons">receipt</i>Ver remito</a>
+                                                                <a class="dropdown-item" href="orders/{{$item->id}}/remito" target="_blank" ><i class="material-icons">receipt</i>Ver remito</a>
 
                                                                 @if (auth()->user()->administrator)
                                                                     @if ($item->status_id == 2)
@@ -281,7 +282,7 @@
                                                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
 
                                                                 <a class="dropdown-item" href="{{ route('orders.show', $item->id) }}"><i class="material-icons">remove_red_eye</i>Ver detalle</a>
-                                                                <a class="dropdown-item" href="orders/remito/{{$item->id}}" target="_blank" ><i class="material-icons">receipt</i>Ver remito</a>
+                                                                <a class="dropdown-item" href="orders/{{$item->id}}/remito" target="_blank" ><i class="material-icons">receipt</i>Ver remito</a>
 
                                                             </div>
                                                         </div>

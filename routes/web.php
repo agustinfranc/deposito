@@ -27,11 +27,12 @@ Route::resources([
     'stock' => 'StockController',
     'orders' => 'OrderController',
     'current-account' => 'CurrentAccountController',
+    'users' => 'UserController',
 ]);
 
 Route::get('orders/{id}/state/{state_id}', 'OrderController@updateState')->name('orders.updateState');
 
-Route::get('orders/remito/{order}', 'OrderController@getRemito')->name('orders.remito');
+Route::get('orders/{order}/remito', 'OrderController@getRemito')->name('orders.remito');
 
 Route::put('carrito/{id}', 'OrderController@updateCarrito')->name('orders.updateCarrito');
 

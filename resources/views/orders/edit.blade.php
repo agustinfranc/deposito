@@ -13,6 +13,8 @@
                     {{-- <span class="badge badge-secondary">${{$order->total}}</span> --}}
                     <span class="badge badge-secondary">{{$order->created_at}}</span>
 
+                    <h5 class="m-5">En proceso</h5>
+
                     <div class="tab-content">
 
                         <div class="tab-pane fade show active" id="activos" role="tabpanel" aria-labelledby="activos-tab">
