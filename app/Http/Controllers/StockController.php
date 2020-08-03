@@ -94,6 +94,7 @@ class StockController extends Controller
         $stock->detail = $request->detail;
         $stock->rubro = $request->rubro;
         $stock->price = $request->price;
+        $stock->quantity = (int) $request->quantity;
         $stock->creator_id = auth()->user()->id;
         $stock->save();
 

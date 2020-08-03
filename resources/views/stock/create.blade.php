@@ -33,9 +33,13 @@
                         </div>
                         <div class="form-group">
                             <label for="price">Precio</label>
-                            <input type="number" class="form-control" id="price" name="price" required>
+                            <input type="number" step=".01" class="form-control" id="price" name="price" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <div class="form-group">
+                            <label for="quantity">Cantidad Inicial</label>
+                            <input type="number" class="form-control" id="quantity" name="quantity" value="0" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Guardar</button>
                     </form>
 
             </div>
