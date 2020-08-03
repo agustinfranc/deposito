@@ -17,10 +17,6 @@ class StockController extends Controller
     {
         $this->middleware('auth');
     }
-    /* public function __construct()
-    {
-        $this->middleware('auth:api');
-    } */
 
     /**
      * Display a listing of the resource.
@@ -29,31 +25,27 @@ class StockController extends Controller
      */
     public function index()
     {
-        //return DB::table('stocks')->get();
-        //return StockResource::collection(Stock::with('ratings')); para usar el resource
-
-        //$usuarioEmail = auth()->user()->email;
-        //$stock = Stock::where('usuario', $usuarioEmail)->paginate(10);
-
         $rubros = Stock::select('rubro')
             ->groupBy('rubro')
             ->paginate(20);
 
-        $stock = Stock::paginate(20);
-
+        //$stock = Stock::paginate(20);
+        // tuve que comentar el paginate porque pasa que sino no se guardan todos los artiulos en el carrito y despues me da error cuando agrego otro que no está en carrito
+        // esto es debido al diseño del carrito lo que tengo que hacer es cambiar esto y guardar un producto en el carrito cuando el usuario suma uno y no tener todos en 0 como ahora
+        $stock = Stock::all();
 
         // TODO: foreach stock chequear si existe en la sesion (carrito) y si existe agregar la quantity
 
         $total = 0;
         $carrito = session('carrito', null);
-        if ($carrito) foreach ($carrito as $item) {
-            if ($item["quantity"] > 0)
-                $total += $item["price"] * $item["quantity"];
+        if ($carrito)
+            foreach ($carrito as $item) {
+                if ($item["quantity"] > 0)
+                    $total += $item["price"] * $item["quantity"];
         }
 
         $array_stock = [];
         foreach ($stock as $item) {
-
             $item->carrito = 0;
 
             if ($carrito)

@@ -97,7 +97,7 @@
                         </tbody>
                     </table>
 
-                    {{ $stock->links() }}
+                    {{-- {{ $stock->links() }} --}}
 
                 </div>
             </div>
