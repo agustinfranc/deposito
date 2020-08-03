@@ -34,7 +34,7 @@
                         </div>
                         <div class="form-group">
                             <label for="price">Precio</label>
-                            <input type="number" class="form-control" id="price" name="price" value="{{ $stock->price }}" required>
+                            <input type="number" step=".01" class="form-control" id="price" name="price" value="{{ $stock->price }}" required>
                         </div>
                         <div class="form-group">
                             <label for="quantity">Cantidad</label>
