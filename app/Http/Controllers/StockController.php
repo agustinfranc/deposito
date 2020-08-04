@@ -8,6 +8,7 @@ use App;
 use App\Stock;
 use App\Http\Resources\StockResource;
 use App\Exports\StockExport;
+use App\Http\Requests\StockRequest;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Auth;
 
@@ -87,7 +88,7 @@ class StockController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StockRequest $request)
     {
         $stock = new Stock();
         $stock->code = $request->code;
