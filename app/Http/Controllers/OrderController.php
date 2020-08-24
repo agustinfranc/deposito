@@ -6,6 +6,7 @@ use App\Order;
 use App\OrderDetail;
 use App\OrderStatus;
 use App\Http\Repositories\OrderRepository;
+use App\Mail\NewOrder;
 use App\Mail\OrderConfirmed;
 use App\Mail\SolicitudPedidoMail;
 use App\OrderPayForm;
@@ -104,10 +105,25 @@ class OrderController extends Controller
             }
         }
 
+        // ? Resto Stock
+        $details = Order::findOrFail($id)->details()->get();
+
+        foreach ($details as $detail) {
+            $stock = Stock::findOrFail($detail['code']);
+            $stock->quantity -= $detail['quantity'];
+            $stock->save();
+        }
+
         $request->session()->forget('carrito');
 
-        // Envio email
+        // Envio email cliente
         Mail::to(auth()->user()->email)->send(new SolicitudPedidoMail());
+
+        // Envio email administradores
+        $adminUsers = User::whereAdministrator(1)->get();
+        if ($adminUsers && sizeof($adminUsers) > 0) foreach ($adminUsers as $user) {
+            Mail::to($user->email)->send(new NewOrder(Order::findOrFail($id), $user));
+        }
 
         return back()->with('mensaje', 'Pedido creado');
     }
@@ -162,18 +178,18 @@ class OrderController extends Controller
 
         $status = OrderStatus::findOrFail($status_id);
 
-        // Resto Stock si el status es Facturado (id = 3)
-        if ($status_id == 3) {
+        if ($status_id == 2) {
+            Mail::to($order->user->email)->send(new OrderConfirmed(Order::findOrFail($id)));
+        }
+        // ? Sumo Stock si el status es Cancelado (id = 7)
+        else if ($status_id == 7) {
             $details = Order::findOrFail($id)->details()->get();
 
             foreach ($details as $detail) {
                 $stock = Stock::findOrFail($detail['code']);
-                $stock->quantity -= $detail['quantity'];
+                $stock->quantity += $detail['quantity'];
                 $stock->save();
             }
-        }
-        else if ($status_id == 2) {
-            Mail::to($order->user->email)->send(new OrderConfirmed(Order::findOrFail($id)));
         }
 
         return back()->with('mensaje', 'Estado actualizado a ' . $status->status);
@@ -216,7 +232,8 @@ class OrderController extends Controller
         //
     }
 
-    public function getRemito(Order $order, OrderRepository $repository) {
+    public function getRemito(Order $order, OrderRepository $repository)
+    {
         $data = $repository->getOrder(request()->all(), $order);
 
         logger($data);
