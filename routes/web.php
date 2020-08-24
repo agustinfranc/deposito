@@ -25,8 +25,6 @@ Auth::routes(['verify' => true]);
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::get('/temp', 'HomeController@index')->name('temp');
-
 Route::resources([
     'stock' => 'StockController',
     'orders' => 'OrderController',

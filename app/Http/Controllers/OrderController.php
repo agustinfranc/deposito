@@ -13,6 +13,7 @@ use App\OrderPayForm;
 use App\Stock;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -22,6 +23,8 @@ class OrderController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+
+        $this->middleware('is.administrator')->only(['edit', 'update', 'destroy']);
     }
 
     /**
@@ -171,6 +174,8 @@ class OrderController extends Controller
     public function updateState(Request $request, OrderRepository $repository, $id = null, $status_id = null)
     {
         if (!$id || !$status_id) return;
+
+        if ($status_id != 7 && !Auth::user()->administrator) return;        // status_id 7 == Cancelado
 
         $order = Order::findOrFail($id);
         $order->status_id = $status_id;
