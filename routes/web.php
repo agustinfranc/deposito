@@ -11,17 +11,21 @@
 |
 */
 
+use Illuminate\Support\Facades\Route;
+use App\Mail\OrderConfirmed;
+use App\Mail\WelcomeMail;
+use Illuminate\Support\Facades\Auth;
+
 /* Route::get('/', function () {
     return view('home');
 })->middleware('auth'); */
-
-use App\Mail\OrderConfirmed;
-use App\Mail\WelcomeMail;
 
 Auth::routes(['verify' => true]);
 //Auth::routes(['register' => false]);
 
 Route::get('/', 'HomeController@index')->name('home');
+
+Route::get('/temp', 'HomeController@index')->name('temp');
 
 Route::resources([
     'stock' => 'StockController',
@@ -39,11 +43,3 @@ Route::put('carrito/{id}', 'OrderController@updateCarrito')->name('orders.update
 Route::get('stock/rubro/{rubro}', 'StockController@getStockPorRubro');
 
 Route::get('exportar/stock', 'StockController@export');
-
-Route::get('email/welcome', function() {
-    return new WelcomeMail();
-});
-
-Route::get('email/orderConfirmed', function() {
-    return new OrderConfirmed();
-});
