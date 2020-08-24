@@ -132,7 +132,7 @@
 
                                                                 @if (auth()->user()->administrator)
                                                                     <a class="dropdown-item" href="orders/{{$item->id}}/state/2" ><i class="material-icons">check</i>Aprobar pedido</a>
-                                                                    <a class="dropdown-item" href="{{ route('orders.edit', $item->id) }}" class="btn mr-2"><i class="material-icons">edit</i>Editar pedido</a>
+                                                                    {{-- <a class="dropdown-item" href="{{ route('orders.edit', $item->id) }}" class="btn mr-2"><i class="material-icons">edit</i>Editar pedido</a> --}}
                                                                     <a class="dropdown-item" href="orders/{{$item->id}}/state/7" ><i class="material-icons">cancel</i>Cancelar pedido</a>
                                                                 @elseif ($item->status_id == 1)
                                                                     <a class="dropdown-item" href="orders/{{$item->id}}/state/7" ><i class="material-icons">cancel</i>Cancelar pedido</a>
