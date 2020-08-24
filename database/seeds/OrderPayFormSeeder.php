@@ -12,8 +12,9 @@ class OrderPayFormSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('order_pay_forms')->insert(['id' => 1, 'name' => 'Efectivo']);
-
-        DB::table('order_pay_forms')->insert(['id' => 2, 'name' => 'Cheque']);
+        DB::table('order_pay_forms')->insert([
+            ['id' => 1, 'name' => 'Efectivo'],
+            ['id' => 2, 'name' => 'Cheque'],
+        ]);
     }
 }
